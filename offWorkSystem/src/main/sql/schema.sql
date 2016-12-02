@@ -3,7 +3,7 @@ CREATE DATABASE off_work_system;
 use off_work_system;
 
 
-CREATE TABLE users(
+CREATE TABLE user(
 `user_id` int NOT NULL COMMENT '用户id',
 `user_username` varchar(20) NOT NULL COMMENT '用户账户',
 `user_password` char(32) NOT NULL COMMENT '用户密码',
@@ -18,7 +18,7 @@ CREATE TABLE users(
 PRIMARY KEY (user_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
 
-CREATE TABLE forms(
+CREATE TABLE form(
 `form_id` int NOT NULL COMMENT '申请id',
 `user_id` int NOT NULL COMMENT '申请者id',
 `form_state` int COMMENT '申请状态',
@@ -32,7 +32,7 @@ CREATE TABLE forms(
 PRIMARY KEY (form_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='请假申请表';
 
-CREATE TABLE departments(
+CREATE TABLE department(
 `department_id` int NOT NULL COMMENT '部门id',
 `department_name` varchar(100) NOT NULL COMMENT '部门名称',
 -- 医院的部门是一个简单的两层结构：第一层有三个部门，分别是医务科、护理部、勤工部,这三个部门没有上级部门；
@@ -45,7 +45,7 @@ PRIMARY KEY (department_id)
 -- 初始化数据库
 
 -- 导入初始的三个一级部门以及几个初始的二级部门
-insert into departments(department_id, department_name, department_parent)
+insert into department(department_id, department_name, department_parent)
 VALUES
 (1000, '医务科', -1),
 (1001, '护理部', -1),
@@ -56,7 +56,7 @@ VALUES
 
 -- 导入初始的用户信息
 -- 涉及密码需要实现md5相关加密后再修改
-insert into users
+insert into user
 (user_id, user_username, user_password, user_name, user_sex, user_age, user_department, user_leader, user_time_left)
 VALUES
 (1000, 'y1','000000', '医务科科长', '男', 46, 1000, 1, 10),

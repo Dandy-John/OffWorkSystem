@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.off_work_system.dao.UserDao">
+    <select id="queryById" resultType="User">
+        select
+          u.user_id,
+          u.user_username,
+          u.user_password,
+          u.user_name,
+          u.user_sex,
+          u.user_age,
+          u.user_department,
+          u.user_leader,
+          u.user_time_left,
+          d.department_id "department.department_id",
+          d.department_name "department.department_name",
+          d.department_parent "department.department_parent"
+        from user u
+        inner join department d on u.user_department  = d.department_id
+        where u.user_id = #{userId};
+    </select>
+    <select id="queryAll" resultType="User">
+        SELECT
+          u.user_id,
+          u.user_username,
+          u.user_password,
+          u.user_name,
+          u.user_sex,
+          u.user_age,
+          u.user_department,
+          u.user_leader,
+          u.user_time_left,
+          d.department_id "department.department_id",
+          d.department_name "department.department_name",
+          d.department_parent "department.department_parent"
+        from user u
+        inner join department d on u.user_department  = d.department_id
+        order by u.user_id DESC
+        limit #{offset}, #{limit};
+    </select>
+</mapper>
