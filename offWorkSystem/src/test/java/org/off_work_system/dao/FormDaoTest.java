@@ -53,7 +53,15 @@ public class FormDaoTest {
 
     @Test
     public void updateForm() throws Exception {
-
+        Form form = Form.getInstance(1000,
+                1001,
+                1,
+                0,
+                5,
+                new Date(),
+                new Date());
+        int result = formDao.updateForm(form);
+        System.out.println(result);
     }
 
     @Test

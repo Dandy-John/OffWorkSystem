@@ -77,7 +77,14 @@
         );
     </insert>
     <update id="updateForm">
-
+        update form set
+          user_id = #{form.userId},
+          form_state = #{form.formState},
+          form_type = #{form.formType},
+          form_length = #{form.formLength},
+          form_start_time = #{form.formStartTime},
+          form_end_time = #{form.formEndTime}
+        where form_id = #{form.formId};
     </update>
     <select id="size" resultType="int">
         select count(*) from form;
