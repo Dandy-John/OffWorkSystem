@@ -40,7 +40,7 @@ public class DepartmentDaoTest {
 
     @Test
     public void addDepartment() throws Exception {
-        Department department = new Department(1111, "testde", 1000);
+        Department department = Department.getInstance(1111, "testde", 1000);
         int result = departmentDao.addDepartment(department);
         System.out.println(result);
     }
@@ -54,7 +54,7 @@ public class DepartmentDaoTest {
 
     @Test
     public void updateDepartment() throws Exception {
-        Department department = new Department(1111, "testupdate", 1001);
+        Department department = Department.getInstance(1111, "testupdate", 1001);
         int result = departmentDao.updateDepartment(department);
         System.out.println(result);
     }

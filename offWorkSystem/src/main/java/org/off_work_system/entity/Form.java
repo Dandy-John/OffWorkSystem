@@ -33,6 +33,26 @@ public class Form {
 
     private User user;
 
+    public static Form getInstance(int formId,
+                                   int userId,
+                                   int formState,
+                                   int formType,
+                                   int formLength,
+                                   Date formStartTime,
+                                   Date formEndTime) {
+        Form form = new Form();
+        form.setFormId(formId);
+        form.setUserId(userId);
+        form.setFormState(formState);
+        form.setFormType(formType);
+        form.setFormLength(formLength);
+        form.setFormStartTime(formStartTime);
+        form.setFormEndTime(formEndTime);
+        form.setUser(null);
+
+        return form;
+    }
+
     public int getFormId() {
         return formId;
     }
@@ -99,6 +119,14 @@ public class Form {
 
     @Override
     public String toString() {
+        String u;
+        if (user == null) {
+            u = "null";
+        }
+        else {
+            u = user.toString();
+        }
+
         return "Form{" +
                 "\nformId=" + formId +
                 ", \nuserId=" + userId +
@@ -107,7 +135,7 @@ public class Form {
                 ", \nformLength=" + formLength +
                 ", \nformStartTime=" + formStartTime +
                 ", \nformEndTime=" + formEndTime +
-                ", \nuser=" + user +
+                ", \nuser=" + u +
                 '}';
     }
 }

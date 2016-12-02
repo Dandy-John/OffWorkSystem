@@ -34,25 +34,28 @@ public class User {
     //用户所属部门的实例
     private Department department;
 
-    public User(int userId,
-                String userUsername,
-                String userPassword,
-                String userName,
-                String userSex,
-                int userAge,
-                int userDepartment,
-                int userLeader,
-                int userTimeLeft) {
-        this.userId = userId;
-        this.userUsername = userUsername;
-        this.userPassword = userPassword;
-        this.userName = userName;
-        this.userSex = userSex;
-        this.userAge = userAge;
-        this.userDepartment = userDepartment;
-        this.userLeader = userLeader;
-        this.userTimeLeft = userTimeLeft;
-        this.department = null;
+    public static User getInstance(int userId,
+                                   String userUsername,
+                                   String userPassword,
+                                   String userName,
+                                   String userSex,
+                                   int userAge,
+                                   int userDepartment,
+                                   int userLeader,
+                                   int userTimeLeft) {
+        User user = new User();
+        user.setUserId(userId);
+        user.setUserUsername(userUsername);
+        user.setUserPassword(userPassword);
+        user.setUserName(userName);
+        user.setUserSex(userSex);
+        user.setUserAge(userAge);
+        user.setUserDepartment(userDepartment);
+        user.setUserLeader(userLeader);
+        user.setUserTimeLeft(userTimeLeft);
+        user.setDepartment(null);
+
+        return user;
     }
 
     public int getUserId() {
@@ -137,6 +140,13 @@ public class User {
 
     @Override
     public String toString() {
+        String de;
+        if (department == null) {
+            de = "null";
+        }
+        else {
+            de = department.toString();
+        }
         return "User{" +
                 "\nuserId=" + userId +
                 ",\nuserUsername='" + userUsername + '\'' +
@@ -147,7 +157,7 @@ public class User {
                 ",\nuserDepartment=" + userDepartment +
                 ",\nuserLeader=" + userLeader +
                 ",\nuserTimeLeft=" + userTimeLeft +
-                ",\ndepartment=" + department +
+                ",\ndepartment=" + de +
                 '}';
     }
 }

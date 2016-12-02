@@ -49,7 +49,7 @@ public class UserDaoTest {
      */
     @Test
     public void addUser() throws Exception {
-        User user = new User(1111,
+        User user = User.getInstance(1111,
                 "abc",
                 "123",
                 "test",
@@ -77,7 +77,7 @@ public class UserDaoTest {
      */
     @Test
     public void updateUser() throws Exception {
-        User user = new User(1111,
+        User user = User.getInstance(1111,
                 "dec",
                 "123321",
                 "test123",
