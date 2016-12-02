@@ -4,40 +4,40 @@ use off_work_system;
 
 
 CREATE TABLE users(
-`user_id` int NOT NULL COMMENT='用户id',
-`user_username` varchar(20) NOT NULL COMMENT='用户账户',
-`user_password` char(32) NOT NULL COMMENT='用户密码',
-`user_name` varchar(20) NOT NULL COMMENT='用户姓名',
-`user_sex` char(10) NOT NULL COMMENT='用户性别',
-`user_age` int NOT NULL COMMENT='用户年龄',
-`user_department` int NOT NULL COMMENT='用户所属部门id',
+`user_id` int NOT NULL COMMENT '用户id',
+`user_username` varchar(20) NOT NULL COMMENT '用户账户',
+`user_password` char(32) NOT NULL COMMENT '用户密码',
+`user_name` varchar(20) NOT NULL COMMENT '用户姓名',
+`user_sex` char(10) NOT NULL COMMENT '用户性别',
+`user_age` int NOT NULL COMMENT '用户年龄',
+`user_department` int NOT NULL COMMENT '用户所属部门id',
 -- 每个第一级或者第二季部门一般有一个或者多个是部门的领导
-`user_leader` int COMMENT='是否是所属部门的领导,1代表是 0代表不是',
+`user_leader` int COMMENT '是否是所属部门的领导,1代表是 0代表不是',
 -- 默认每个人有年假10天
-`user_time_left` int DEFAULT 10 COMMENT='用户今年年假剩余时间',
+`user_time_left` int DEFAULT 10 COMMENT '用户今年年假剩余时间',
 PRIMARY KEY (user_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 CREATE TABLE forms(
-`form_id` int NOT NULL COMMENT='申请id',
-`user_id` int NOT NULL COMMENT='申请者id',
-`form_state` int COMMENT='申请状态',
-`form_type` int COMMENT='申请请假类型',
+`form_id` int NOT NULL COMMENT '申请id',
+`user_id` int NOT NULL COMMENT '申请者id',
+`form_state` int COMMENT '申请状态',
+`form_type` int COMMENT '申请请假类型',
 -- 请假结束时间减去请假开始时间即为请假时长（这条其实有冗余，是否删去待定）
-`form_length` int COMMENT='请假时长（天）',
+`form_length` int COMMENT '请假时长（天）',
 -- 记录请假时间开始和结束不仅是因为需要备案，同时由于请假期间并不是每一天都是请假人的工作日，
 -- 科室负责人在调用接口来确认请假人需要扣除多少奖金的时候也需要这两个时间结合科室的轮休表换算（本系统只负责提供接口，不实现）
-`form_start_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT='请假开始时间',
-`form_end_time` TIMESTAMP  DEFAULT CURRENT_TIMESTAMP COMMENT='请假结束时间',
+`form_start_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '请假开始时间',
+`form_end_time` TIMESTAMP  DEFAULT CURRENT_TIMESTAMP COMMENT '请假结束时间',
 PRIMARY KEY (form_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='请假申请表';
 
 CREATE TABLE departments(
-`department_id` int NOT NULL COMMENT='部门id',
-`department_name` varchar(100) NOT NULL COMMENT='部门名称',
+`department_id` int NOT NULL COMMENT '部门id',
+`department_name` varchar(100) NOT NULL COMMENT '部门名称',
 -- 医院的部门是一个简单的两层结构：第一层有三个部门，分别是医务科、护理部、勤工部,这三个部门没有上级部门；
 -- 第二层有多个科室，上级部门是第一层的三个部门之一。
-`department_parent` int DEFAULT -1 COMMENT='上级部门id',
+`department_parent` int DEFAULT -1 COMMENT '上级部门id',
 PRIMARY KEY (department_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='部门表';
 
