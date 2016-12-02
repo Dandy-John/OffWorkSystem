@@ -17,4 +17,6 @@ public interface FormDao {
     int addForm(@Param("form") Form form);
 
     int updateForm(@Param("form") Form form);
+
+    int size();
 }

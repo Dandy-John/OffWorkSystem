@@ -80,4 +80,7 @@
         where
           user_id = #{user.userId}
     </update>
+    <select id="size" resultType="int">
+        select count(*) from user;
+    </select>
 </mapper>

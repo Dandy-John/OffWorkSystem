@@ -19,4 +19,6 @@ public interface DepartmentDao {
     int deleteById(@Param("departmentId") int departmentId);
 
     int updateDepartment(@Param("department") Department department);
+
+    int size();
 }

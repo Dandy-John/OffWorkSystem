@@ -19,4 +19,6 @@ public interface UserDao {
     int deleteById(@Param("userId") int userId);
 
     int updateUser(@Param("user") User user);
+
+    int size();
 }

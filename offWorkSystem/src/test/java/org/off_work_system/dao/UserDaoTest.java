@@ -90,4 +90,9 @@ public class UserDaoTest {
         System.out.println(result);
     }
 
+    @Test
+    public void size() throws Exception {
+        int size = userDao.size();
+        System.out.println(size);
+    }
 }

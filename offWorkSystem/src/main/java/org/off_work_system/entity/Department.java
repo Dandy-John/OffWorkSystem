@@ -14,6 +14,12 @@ public class Department {
     //部门所属的上级部门id
     private int departmentParent;
 
+    public Department(int departmentId, String departmentName, int departmentParent) {
+        this.departmentId = departmentId;
+        this.departmentName = departmentName;
+        this.departmentParent = departmentParent;
+    }
+
     public int getDepartmentId() {
         return departmentId;
     }
