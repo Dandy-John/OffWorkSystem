@@ -34,6 +34,26 @@ public class User {
     //用户所属部门的实例
     private Department department;
 
+    public User(int userId,
+                String userUsername,
+                String userPassword,
+                String userName,
+                String userSex,
+                int userAge,
+                int userDepartment,
+                int userLeader,
+                int userTimeLeft) {
+        this.userId = userId;
+        this.userUsername = userUsername;
+        this.userPassword = userPassword;
+        this.userName = userName;
+        this.userSex = userSex;
+        this.userAge = userAge;
+        this.userDepartment = userDepartment;
+        this.userLeader = userLeader;
+        this.userTimeLeft = userTimeLeft;
+        this.department = null;
+    }
 
     public int getUserId() {
         return userId;

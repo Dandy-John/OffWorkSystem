@@ -40,4 +40,44 @@
         order by u.user_id DESC
         limit #{offset}, #{limit};
     </select>
+    <insert id="addUser">
+        insert into user(
+          user_id,
+          user_username,
+          user_password,
+          user_name,
+          user_sex,
+          user_age,
+          user_department,
+          user_leader,
+          user_time_left
+        )
+        values (
+          #{user.userId},
+          #{user.userUsername},
+          #{user.userPassword},
+          #{user.userName},
+          #{user.userSex},
+          #{user.userAge},
+          #{user.userDepartment},
+          #{user.userLeader},
+          #{user.userTimeLeft}
+        );
+    </insert>
+    <delete id="deleteById">
+        delete from user where user_id = #{userId};
+    </delete>
+    <update id="updateUser">
+        update user set
+          user_username = #{user.userUsername},
+          user_password = #{user.userPassword},
+          user_name = #{user.userName},
+          user_sex = #{user.userSex},
+          user_age = #{user.userAge},
+          user_department = #{user.userDepartment},
+          user_leader = #{user.userLeader},
+          user_time_left = #{user.userTimeLeft}
+        where
+          user_id = #{user.userId}
+    </update>
 </mapper>
