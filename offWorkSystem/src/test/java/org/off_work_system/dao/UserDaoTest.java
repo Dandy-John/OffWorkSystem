@@ -33,6 +33,13 @@ public class UserDaoTest {
         System.out.println(user);
     }
 
+    @Test
+    public void queryByUsername() throws Exception {
+        String username = "abc";
+        User user = userDao.queryByUsername(username);
+        System.out.println(user);
+    }
+
     /*
     单元测试
      */
@@ -88,6 +95,14 @@ public class UserDaoTest {
                 22);
         int result = userDao.updateUser(user);
         System.out.println(result);
+    }
+
+    @Test
+    public void tryLogin() throws Exception {
+        String username = "abc";
+        String password = "123";
+        User user = userDao.tryLogin(username, password);
+        System.out.println(user);
     }
 
     @Test

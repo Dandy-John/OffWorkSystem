@@ -21,6 +21,24 @@
         inner join department d on u.user_department  = d.department_id
         where u.user_id = #{userId};
     </select>
+    <select id="queryByUsername" resultType="User">
+        select
+          u.user_id,
+          u.user_username,
+          u.user_password,
+          u.user_name,
+          u.user_sex,
+          u.user_age,
+          u.user_department,
+          u.user_leader,
+          u.user_time_left,
+          d.department_id "department.department_id",
+          d.department_name "department.department_name",
+          d.department_parent "department.department_parent"
+        from user u
+        inner join department d on u.user_department  = d.department_id
+        where u.user_username = #{userUsername};
+    </select>
     <select id="queryAll" resultType="User">
         SELECT
           u.user_id,
@@ -80,6 +98,27 @@
         where
           user_id = #{user.userId}
     </update>
+    <select id="tryLogin" resultType="User">
+        select
+          u.user_id,
+          u.user_username,
+          u.user_password,
+          u.user_name,
+          u.user_sex,
+          u.user_age,
+          u.user_department,
+          u.user_leader,
+          u.user_time_left,
+          d.department_id "department.department_id",
+          d.department_name "department.department_name",
+          d.department_parent "department.department_parent"
+        from user u
+        inner join department d on u.user_department  = d.department_id
+        where
+          u.user_username = #{userUsername}
+        and
+          u.user_password = #{userPassword};
+    </select>
     <select id="size" resultType="int">
         select count(*) from user;
     </select>

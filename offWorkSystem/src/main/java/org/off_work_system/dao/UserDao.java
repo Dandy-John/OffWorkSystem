@@ -12,6 +12,8 @@ public interface UserDao {
 
     User queryById(@Param("userId") int userId);
 
+    User queryByUsername(@Param("userUsername") String userUsername);
+
     List<User> queryAll(@Param("offset") int offset, @Param("limit") int limit);
 
     int addUser(@Param("user") User user);
@@ -19,6 +21,8 @@ public interface UserDao {
     int deleteById(@Param("userId") int userId);
 
     int updateUser(@Param("user") User user);
+
+    User tryLogin(@Param("userUsername") String userUsername, @Param("userPassword") String userPassword);
 
     int size();
 }
