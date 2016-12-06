@@ -123,4 +123,12 @@ public class UserServiceImpl implements UserService {
         int result = userDao.updateUser(newUser);
         return result;
     }
+
+    public int resetPassword(int userId){
+        String password = "000000";
+        User user = getUser(userId);
+        user.setUserPassword(password);
+        int result = userDao.updateUser(user);
+        return result;
+    }
 }

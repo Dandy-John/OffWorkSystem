@@ -181,12 +181,41 @@ public class UserController {
                                        @ModelAttribute("userDepartment") int userDepartment,
                                        @ModelAttribute("userLeader") int userLeader,
                                        @ModelAttribute("userTimeLeft") int userTimeLeft) {
-        int result = userService.updateUser(userId, userName, userSex, userAge, userDepartment, userLeader, userTimeLeft);
-        if (result == 0) {
-            return new ResultWrapper<User>(600, null);
+        int permission = userService.verifyUserCookieOfListPermission(userVerify);
+        if (permission == 200) {
+            int result = userService.updateUser(userId, userName, userSex, userAge, userDepartment, userLeader, userTimeLeft);
+            if (result == 0) {
+                return new ResultWrapper<User>(600, null);
+            }
+            else {
+                return new ResultWrapper<User>(200, null);
+            }
         }
         else {
-            return new ResultWrapper<User>(200, null);
+            return new ResultWrapper<User>(permission, null);
+        }
+    }
+
+    @RequestMapping(
+            value = "/api/reset",
+            method = RequestMethod.POST,
+            produces = {"application/json;charset=UTF-8"}
+    )
+    @ResponseBody
+    public ResultWrapper<User> resetPasswordAPI(@CookieValue("userVerify") String userVerify,
+                                                @ModelAttribute("userId") int userId) {
+        int permission = userService.verifyUserCookieOfListPermission(userVerify);
+        if (permission == 200) {
+            int result = userService.resetPassword(userId);
+            if (result == 0) {
+                return new ResultWrapper<User>(600, null);
+            }
+            else {
+                return new ResultWrapper<User>(200, null);
+            }
+        }
+        else {
+            return new ResultWrapper<User>(permission, null);
         }
     }
 

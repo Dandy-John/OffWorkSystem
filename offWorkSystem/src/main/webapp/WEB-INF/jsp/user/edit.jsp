@@ -20,7 +20,7 @@
                 <div>
                     <label class="control-label">密码</label>
                     <input type="text" id="userPassword" value="${user.userPassword}" disabled />
-                    <input type="button" class="btn" id="resetPassword" value="重置" />
+                    <input type="button" class="btn" id="reset" value="重置" onclick="resetPassword()" />
                 </div>
                 <div>
                     <label class="control-label">姓名</label>
@@ -56,7 +56,7 @@
                 </div>
                 <div>
                     <input type="button" class="btn btn-primary" id="submit" value="更改" onclick="submitForm()"/>
-                    <input type="button" class="btn" id="cancel" value="取消" onclick="cancel()" />
+                    <input type="button" class="btn" id="cancel" value="取消" onclick="cancelEdit()" />
                 </div>
             </form>
         </div>
@@ -122,11 +122,24 @@
                 alert("更改失败");
                 window.location.href = "/off_work_system/user/list";
             }
-        })
+        });
     }
 
-    function cancel() {
+    function cancelEdit() {
         window.location.href = "/off_work_system/user/list";
+    }
+
+    function resetPassword() {
+        $.post("/off_work_system/user/api/reset", {'userId' : ${user.userId}}, function (result) {
+            if (result.state == 200) {
+                alert("重置成功");
+                window.location.href = "/off_work_system/user/${user.userId}/edit";
+            }
+            else {
+                alert("重置失败");
+                window.location.href = "/off_work_system/user/${user.userId}/edit";
+            }
+        });
     }
 </script>
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
