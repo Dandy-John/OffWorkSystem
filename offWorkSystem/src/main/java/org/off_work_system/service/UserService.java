@@ -19,4 +19,8 @@ public interface UserService {
     boolean userListPermission(int userId);
 
     int verifyUserCookieOfListPermission(String cookieStr);
+
+    User isLogin(String userVerify);
+
+    int updateUser(int userId, String userName, String userSex, int userAge, int userDepartment, int userLeader, int userTimeLeft);
 }

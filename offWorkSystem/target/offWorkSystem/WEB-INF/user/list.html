@@ -1,0 +1,77 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>秒杀列表页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+<script>
+    $.get("/off_work_system/user/api/list", function(result) {
+        console.log(result);
+        if (result.state == 490) {
+            window.location.href = "/off_work_system/user/login";
+        }
+        else if (result.state == 200) {
+            fillTable(result.data);
+        }
+        else {
+            window.location.href = "/off_work_system";
+        }
+    });
+
+    function fillTable(data) {
+        var content = '';
+        for (var i = 0; i < data.length; i++) {
+            var row = "";
+            row += '<td>' + data[i].userUsername + '</td>';
+            row += '<td>' + data[i].userPassword + '</td>';
+            row += '<td>' + data[i].userName + '</td>';
+            row += '<td>' + data[i].userSex + '</td>';
+            row += '<td>' + data[i].userAge + '</td>';
+            row += '<td>' + data[i].department.departmentName + '</td>';
+            row += '<td>' + data[i].userLeader + '</td>';
+            row += '<td>' + data[i].userTimeLeft + '</td>';
+            var action = '<a href="off_work_system/user/' + data[i].userId + '/edit">编辑</a>';
+            action += ' <a href="javascript:deleteUser(' + data[i].userId + ')">删除</a>';
+            row += '<td>' + action + '</td>'
+            row = '<tr>' + row + '</tr>';
+            content += row;
+        }
+
+        $('#tableBody').html(content);
+    }
+
+    function deleteUser(id) {
+        //TODO
+    }
+</script>
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">
+            <h2>秒杀列表</h2>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>用户名</th>
+                    <th>密码</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>年龄</th>
+                    <th>所属部门</th>
+                    <th>是否是部门领导</th>
+                    <th>剩余年假</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

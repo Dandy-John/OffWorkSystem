@@ -49,6 +49,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public int verifyUserCookieOfListPermission(String cookieStr) {
+        if (cookieStr == null) {
+            return 490;
+        }
+
         System.out.println(cookieStr);
         String[] userStr = cookieStr.split("\\|");
         for (String str : userStr) {
@@ -79,5 +83,44 @@ public class UserServiceImpl implements UserService {
         else {
             return 403;
         }
+    }
+
+    public User isLogin(String userVerify) {
+        if (userVerify == null) {
+            return null;
+        }
+        String[] userStr = userVerify.split("\\|");
+        String username = userStr[0];
+        String password = userStr[1];
+        String timeStr = userStr[2];
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(Long.parseLong(timeStr));
+        cal.add(Calendar.DATE, 1);
+
+        Calendar now = Calendar.getInstance();
+
+        //cookie过期
+        if (cal.compareTo(now) < 0) {
+            return null;
+        }
+
+        User user = checkUser(username, password);
+        return user;
+    }
+
+    public int updateUser(int userId, String userName, String userSex, int userAge, int userDepartment, int userLeader, int userTimeLeft) {
+        User oldUser = getUser(userId);
+        User newUser = User.getInstance(userId,
+                oldUser.getUserUsername(),
+                oldUser.getUserPassword(),
+                userName,
+                userSex,
+                userAge,
+                userDepartment,
+                userLeader,
+                userTimeLeft);
+        int result = userDao.updateUser(newUser);
+        return result;
     }
 }
