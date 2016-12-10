@@ -1,6 +1,8 @@
 package org.off_work_system.service.impl;
 
+import org.off_work_system.dao.DepartmentDao;
 import org.off_work_system.dao.UserDao;
+import org.off_work_system.entity.Department;
 import org.off_work_system.entity.User;
 import org.off_work_system.exception.PermissionDeniedException;
 import org.off_work_system.service.UserService;
@@ -20,6 +22,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private DepartmentDao departmentDao;
+
     public List<User> getUserList() throws PermissionDeniedException {
         return userDao.queryAll(0, userDao.size());
     }
@@ -33,12 +38,12 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    public boolean userListPermission(int userId) {
+    public boolean isAdmin(int userId) {
         User user = getUser(userId);
-        return userListPermission(user);
+        return isAdmin(user);
     }
 
-    public boolean userListPermission(User user) {
+    public boolean isAdmin(User user) {
         int departmentParent = user.getDepartment().getDepartmentParent();
         if (departmentParent == -1 && user.getUserLeader() == 1) {
             return true;
@@ -48,13 +53,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public int verifyUserCookieOfListPermission(String cookieStr) {
-        if (cookieStr == null) {
+    public int verifyCookieOfAdmin(String userVerify) {
+        if (userVerify == null) {
             return 490;
         }
 
-        System.out.println(cookieStr);
-        String[] userStr = cookieStr.split("\\|");
+        System.out.println(userVerify);
+        String[] userStr = userVerify.split("\\|");
         for (String str : userStr) {
             System.out.println(str);
         }
@@ -77,7 +82,7 @@ public class UserServiceImpl implements UserService {
             return 490;
         }
 
-        if (userListPermission(user)) {
+        if (isAdmin(user)) {
             return 200;
         }
         else {
@@ -121,14 +126,128 @@ public class UserServiceImpl implements UserService {
                 userLeader,
                 userTimeLeft);
         int result = userDao.updateUser(newUser);
-        return result;
+        if (result != 0) {
+            return 200;
+        }
+        else {
+            return 600;
+        }
     }
 
-    public int resetPassword(int userId){
+    public int resetPassword(int userId) {
         String password = "000000";
         User user = getUser(userId);
         user.setUserPassword(password);
         int result = userDao.updateUser(user);
-        return result;
+        if (result != 0) {
+            return 200;
+        }
+        else {
+            return 600;
+        }
+    }
+
+    public int deleteById(int userId) {
+        int result = userDao.deleteById(userId);
+        if (result != 0) {
+            return 200;
+        }
+        else {
+            return 600;
+        }
+    }
+
+    public int addUser(String userUsername,
+                       String userName,
+                       String userSex,
+                       int userAge,
+                       int userDepartment,
+                       int userLeader,
+                       int userTimeLeft) {
+        User user = User.getInstance(0,
+                userUsername,
+                "000000",
+                userName,
+                userSex,
+                userAge,
+                userDepartment,
+                userLeader,
+                userTimeLeft);
+        User sameUsername = userDao.queryByUsername(userUsername);
+        if (sameUsername != null) {
+            return 601;
+        }
+        else {
+            //非法输入检查
+            //避免用户采取某些方法绕过了前台检查
+            if (!userSex.equals("男") && !userSex.equals("女")) {
+                return 602;
+            }
+            if (userAge <= 0) {
+                return 602;
+            }
+            Department department = departmentDao.queryById(userDepartment);
+            if (department == null) {
+                return 602;
+            }
+            if (userLeader != 0 && userLeader != 1) {
+                return 602;
+            }
+            if (userTimeLeft < 0) {
+                return 602;
+            }
+
+            int result = userDao.addUser(user);
+            if (result != 0) {
+                return 200;
+            }
+            else {
+                return 600;
+            }
+        }
+    }
+
+    public int isMyself(String userVerify, int userId) {
+        User user = isLogin(userVerify);
+        if (user == null) {
+            return 490;
+        }
+        else if (user.getUserId() == userId) {
+            return 200;
+        }
+        else {
+            return 403;
+        }
+    }
+
+    public int editMyself(int userId, String userName, String userSex, int userAge) {
+        User user = userDao.queryById(userId);
+        user.setUserName(userName);
+        user.setUserSex(userSex);
+        user.setUserAge(userAge);
+        int result = userDao.updateUser(user);
+        if (result != 0) {
+            return 200;
+        }
+        else {
+            return 600;
+        }
+    }
+
+    public int changeMyPassword(int userId, String oldPassword, String newPassword) {
+        User user = userDao.queryById(userId);
+        if (user.getUserPassword().equals(oldPassword)) {
+            user.setUserPassword(newPassword);
+            int result = userDao.updateUser(user);
+            if (result != 0) {
+                return 200;
+            }
+            else {
+                return 600;
+            }
+        }
+        else {
+            return 603;
+        }
     }
 }

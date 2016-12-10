@@ -56,10 +56,10 @@ public class UserDaoTest {
      */
     @Test
     public void addUser() throws Exception {
-        User user = User.getInstance(1111,
-                "abc",
+        User user = User.getInstance(1112,
+                "aaa",
                 "123",
-                "test",
+                "test2",
                 "男",
                 12,
                 1000,

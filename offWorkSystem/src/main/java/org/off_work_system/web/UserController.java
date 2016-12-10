@@ -34,6 +34,17 @@ public class UserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(@CookieValue(value = "userVerify", required = false) String userVerify, Model model) {
+        ResultWrapper<User> result = isLoginAPI(userVerify);
+        if (result.isSuccess()) {
+            String error = "您已登陆";
+            model.addAttribute("error", error);
+            return "error/error";
+        }
+        else {
+            return "user/login";
+        }
+
+        /* old implementation
         User user = userService.isLogin(userVerify);
         if (user == null) {
             return "user/login";
@@ -43,10 +54,22 @@ public class UserController {
             model.addAttribute("error", error);
             return "error/error";
         }
+        */
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(@CookieValue(value = "userVerify", required = false) String userVerify, Model model) {
+        //调用相关API取得数据
+        ResultWrapper<List<User>> wrapper = listAPI(userVerify);
+        if (wrapper.isSuccess()) {
+            model.addAttribute("list", wrapper.getData());
+            return ("user/list");
+        }
+        else {
+            model.addAttribute("error", ResultStateEnum.stateof(wrapper.getState()).getStateInfo());
+            return "error/error";
+        }
+        /* old implementation
         int result = userService.verifyUserCookieOfListPermission(userVerify);
 
         if (result == 200) {
@@ -59,13 +82,28 @@ public class UserController {
             model.addAttribute("error", error);
             return "error/error";
         }
+        */
     }
 
     @RequestMapping(value = "/{userId}/edit", method = RequestMethod.GET)
     public String edit(@CookieValue(value = "userVerify", required = false) String userVerify,
                        @PathVariable("userId") int userId,
                        Model model) {
-        int result = userService.verifyUserCookieOfListPermission(userVerify);
+        int result = isAdminAPI(userVerify).getState();
+        if (result == 200) {
+            User user = getByIdAPI(userId).getData();
+            List<Department> departmentList = getAllDepartmentsAPI(userVerify).getData();
+            model.addAttribute("user", user);
+            model.addAttribute("departments", departmentList);
+            return "user/edit";
+        }
+        else {
+            String error = ResultStateEnum.stateof(result).getStateInfo();
+            model.addAttribute("error", error);
+            return "error/error";
+        }
+        /* old implementation
+        int result = userService.verifyCookieOfAdmin(userVerify);
 
         if (result == 200) {
             User user = userService.getUser(userId);
@@ -76,6 +114,52 @@ public class UserController {
         }
         else {
             String error = ResultStateEnum.stateof(result).getStateInfo();
+            model.addAttribute("error", error);
+            return "error/error";
+        }
+        */
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String addUser(@CookieValue(value = "userVerify", required = false) String userVerify, Model model) {
+        int permission = isAdminAPI(userVerify).getState();
+        if (permission == 200) {
+            List<Department> departments = getAllDepartmentsAPI(userVerify).getData();
+            model.addAttribute("departments", departments);
+            return "user/add";
+        }
+        else {
+            String error = ResultStateEnum.stateof(permission).getStateInfo();
+            model.addAttribute("error", error);
+            return "error/error";
+        }
+    }
+
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    public String editMyself(@CookieValue(value = "userVerify", required = false) String userVerify, Model model) {
+        ResultWrapper<User> wrapper = isLoginAPI(userVerify);
+        if (wrapper.isSuccess()) {
+            List<Department> departments = getAllDepartmentsAPI(userVerify).getData();
+            model.addAttribute("departments", departments);
+            model.addAttribute("user", wrapper.getData());
+            return "/user/editMyself";
+        }
+        else {
+            String error = ResultStateEnum.stateof(wrapper.getState()).getStateInfo();
+            model.addAttribute("error", error);
+            return "/error/error";
+        }
+    }
+
+    @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
+    public String changePassword(@CookieValue(value = "userVerify", required = false) String userVerify, Model model) {
+        ResultWrapper<User> wrapper = isLoginAPI(userVerify);
+        if (wrapper.isSuccess()) {
+            model.addAttribute("user", wrapper.getData());
+            return "/user/changePassword";
+        }
+        else {
+            String error = ResultStateEnum.stateof(wrapper.getState()).getStateInfo();
             model.addAttribute("error", error);
             return "error/error";
         }
@@ -91,7 +175,7 @@ public class UserController {
         if (userVerify == null) {
             return new ResultWrapper<List<User>>(490, null);
         }
-        int result = userService.verifyUserCookieOfListPermission(userVerify);
+        int result = userService.verifyCookieOfAdmin(userVerify);
         if (result != 200) {
             return new ResultWrapper<List<User>>(result, null);
         }
@@ -173,7 +257,7 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
-    public ResultWrapper<User> editAPI(@CookieValue("userVerify") String userVerify,
+    public ResultWrapper<User> editAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
                                        @ModelAttribute("userId") int userId,
                                        @ModelAttribute("userName") String userName,
                                        @ModelAttribute("userSex") String userSex,
@@ -181,15 +265,10 @@ public class UserController {
                                        @ModelAttribute("userDepartment") int userDepartment,
                                        @ModelAttribute("userLeader") int userLeader,
                                        @ModelAttribute("userTimeLeft") int userTimeLeft) {
-        int permission = userService.verifyUserCookieOfListPermission(userVerify);
+        int permission = userService.verifyCookieOfAdmin(userVerify);
         if (permission == 200) {
             int result = userService.updateUser(userId, userName, userSex, userAge, userDepartment, userLeader, userTimeLeft);
-            if (result == 0) {
-                return new ResultWrapper<User>(600, null);
-            }
-            else {
-                return new ResultWrapper<User>(200, null);
-            }
+            return new ResultWrapper<User>(result, null);
         }
         else {
             return new ResultWrapper<User>(permission, null);
@@ -202,22 +281,147 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
-    public ResultWrapper<User> resetPasswordAPI(@CookieValue("userVerify") String userVerify,
+    public ResultWrapper<User> resetPasswordAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
                                                 @ModelAttribute("userId") int userId) {
-        int permission = userService.verifyUserCookieOfListPermission(userVerify);
+        int permission = userService.verifyCookieOfAdmin(userVerify);
         if (permission == 200) {
             int result = userService.resetPassword(userId);
-            if (result == 0) {
-                return new ResultWrapper<User>(600, null);
-            }
-            else {
-                return new ResultWrapper<User>(200, null);
-            }
+            return new ResultWrapper<User>(result, null);
         }
         else {
             return new ResultWrapper<User>(permission, null);
         }
     }
+
+    @RequestMapping(
+            value = "/api/isAdmin",
+            method = RequestMethod.GET,
+            produces = {"application/json;charset=UTF-8"}
+    )
+    @ResponseBody
+    public ResultWrapper<User> isAdminAPI(@CookieValue(value = "userVerify", required = false) String userVerify) {
+        return new ResultWrapper<User>(userService.verifyCookieOfAdmin(userVerify), null);
+    }
+
+    @RequestMapping(
+            value = "/api/getAllDepartments",
+            method = RequestMethod.GET,
+            produces = {"application/json;charset=UTF-8"}
+    )
+    @ResponseBody
+    public ResultWrapper<List<Department>> getAllDepartmentsAPI(@CookieValue("userVerify") String userVerify) {
+        if (isLoginAPI(userVerify).isSuccess()) {
+            List<Department> departmentList = departmentService.queryAll();
+            return new ResultWrapper<List<Department>>(200, departmentList);
+        }
+        else {
+            return new ResultWrapper<List<Department>>(490, null);
+        }
+    }
+
+    @RequestMapping(
+            value = "/api/delete",
+            method = RequestMethod.POST,
+            produces = {"application/json;charset=UTF-8"}
+    )
+    @ResponseBody
+    public ResultWrapper<User> deleteAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
+                                         @ModelAttribute("userId") int userId) {
+        int result = isAdminAPI(userVerify).getState();
+        if (result == 200) {
+            int state = userService.deleteById(userId);
+            return new ResultWrapper<User>(state, null);
+        }
+        else {
+            return new ResultWrapper<User>(result, null);
+        }
+    }
+
+    @RequestMapping(
+            value = "/api/add",
+            method = RequestMethod.POST,
+            produces = {"application/json;charset=UTF-8"}
+    )
+    @ResponseBody
+    public ResultWrapper<User> addAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
+                                      @ModelAttribute("userUsername") String userUsername,
+                                      @ModelAttribute("userName") String userName,
+                                      @ModelAttribute("userSex") String userSex,
+                                      @ModelAttribute("userAge") int userAge,
+                                      @ModelAttribute("userDepartment") int userDepartment,
+                                      @ModelAttribute("userLeader") int userLeader,
+                                      @ModelAttribute("userTimeLeft") int userTimeLeft) {
+        int permission = isAdminAPI(userVerify).getState();
+        if (permission == 200) {
+            int result = userService.addUser(userUsername,
+                    userName,
+                    userSex,
+                    userAge,
+                    userDepartment,
+                    userLeader,
+                    userTimeLeft);
+            return new ResultWrapper<User>(result, null);
+        }
+        else {
+            return new ResultWrapper<User>(permission, null);
+        }
+    }
+
+    @RequestMapping(
+            value = "/api/isMyself",
+            method = RequestMethod.POST,
+            produces = {"application/json;charset=UTF-8"}
+    )
+    @ResponseBody
+    public ResultWrapper<User> isMyselfAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
+                                        @ModelAttribute("userId") int userId) {
+        int isMyself = userService.isMyself(userVerify, userId);
+        return new ResultWrapper<User>(isMyself, null);
+    }
+
+    @RequestMapping(
+            value = "/api/editMyself",
+            method = RequestMethod.POST,
+            produces = {"application/json;charset=UTF-8"}
+    )
+    @ResponseBody
+    public ResultWrapper<User> editMyselfAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
+                                             @ModelAttribute("userName") String userName,
+                                             @ModelAttribute("userSex") String userSex,
+                                             @ModelAttribute("userAge") int userAge) {
+        ResultWrapper<User> wrapper = isLoginAPI(userVerify);
+        if (wrapper.isSuccess()) {
+            int result = userService.editMyself(wrapper.getData().getUserId(), userName, userSex, userAge);
+            return new ResultWrapper<User>(result, null);
+        }
+        else {
+            return new ResultWrapper<User>(490, null);
+        }
+    }
+
+    @RequestMapping(
+            value = "/api/changePassword",
+            method = RequestMethod.POST,
+            produces = {"application/json;charset=UTF-8"}
+    )
+    @ResponseBody
+    public ResultWrapper<User> changePasswordAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
+                                                 @ModelAttribute("userId") int userId,
+                                                 @ModelAttribute("oldPassword") String oldPassword,
+                                                 @ModelAttribute("newPassword") String newPassword) {
+        int isMyself = isMyselfAPI(userVerify, userId).getState();
+        if (isMyself == 200) {
+            int result = userService.changeMyPassword(userId, oldPassword, newPassword);
+            return new ResultWrapper<User>(result, null);
+        }
+        else {
+            return new ResultWrapper<User>(isMyself, null);
+        }
+    }
+
+
+    //--------------------------------------------------------------------
+    //cookie example
 
     @RequestMapping(
             value = "/api/trysetcookie",

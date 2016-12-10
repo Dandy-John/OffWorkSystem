@@ -15,6 +15,7 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
+                    <th>用户编号</th>
                     <th>用户名</th>
                     <th>密码</th>
                     <th>姓名</th>
@@ -29,6 +30,7 @@
                 <tbody>
                 <c:forEach var="user" items="${list}">
                     <tr>
+                        <td>${user.userId}</td>
                         <td>${user.userUsername}</td>
                         <td>${user.userPassword}</td>
                         <td>${user.userName}</td>
@@ -37,15 +39,46 @@
                         <td>${user.department.departmentName}</td>
                         <td>${user.userLeader == 1 ? "是" : "否"}</td>
                         <td>${user.userTimeLeft} 天</td>
-                        <td><a href="/off_work_system/user/${user.userId}/edit">编辑</a> <a href="off_work_system/user/${user.userId}/delete">删除</a></td>
+                        <td><a href="/off_work_system/user/${user.userId}/edit">编辑</a> <a href="javascript:deleteUser(${user.userId})">删除</a></td>
                     </tr>
                 </c:forEach>
+                <tr>
+                    <input type="button" class="btn btn-primary" onclick="addUser()" value="新增" />
+                </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 </body>
+<script>
+    function deleteUser(userId) {
+        if (confirm("确认删除用户编号为 " + userId + " 的用户吗?")) {
+            $.post("/off_work_system/user/api/delete", {"userId" : userId}, function(result) {
+                if (result.state == 200) {
+                    alert("删除成功");
+                    window.location.reload();
+                }
+                else {
+                    $.post("/off_work_system/error/api/getErrorInfo", {"state" : result.state}, function(r) {
+                        var message;
+                        if (r.state == 200) {
+                            message = r.data;
+                        }
+                        else {
+                            message = "未知的错误";
+                        }
+                        alert("删除失败，错误码：" + result.state + "\n错误信息：" + message);
+                    });
+                }
+            });
+        }
+    }
+
+    function addUser(){
+        window.location.href = "/off_work_system/user/add";
+    }
+</script>
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
 

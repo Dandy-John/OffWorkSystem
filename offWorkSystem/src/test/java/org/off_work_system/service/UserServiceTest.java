@@ -45,4 +45,15 @@ public class UserServiceTest {
         System.out.println(user);
     }
 
+    @Test
+    public void addUser() throws Exception {
+        int result = userService.addUser("abc",
+                "testUsr",
+                "男",
+                18,
+                1001,
+                0,
+                12);
+        System.out.println(result);
+    }
 }

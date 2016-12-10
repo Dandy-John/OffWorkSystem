@@ -60,7 +60,6 @@
     </select>
     <insert id="addUser">
         insert into user(
-          user_id,
           user_username,
           user_password,
           user_name,
@@ -71,7 +70,6 @@
           user_time_left
         )
         values (
-          #{user.userId},
           #{user.userUsername},
           #{user.userPassword},
           #{user.userName},
