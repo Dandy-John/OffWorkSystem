@@ -40,7 +40,7 @@ public class FormDaoTest {
 
     @Test
     public void addForm() throws Exception {
-        Form form = Form.getInstance(1000,
+        Form form = Form.getInstance(0,
                 1001,
                 0,
                 0,

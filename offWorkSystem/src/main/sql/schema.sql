@@ -19,7 +19,7 @@ PRIMARY KEY (user_id)
 )ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 CREATE TABLE form(
-`form_id` int NOT NULL COMMENT '申请id',
+`form_id` int NOT NULL AUTO_INCREMENT COMMENT '申请id',
 `user_id` int NOT NULL COMMENT '申请者id',
 `form_state` int COMMENT '申请状态',
 `form_type` int COMMENT '申请请假类型',
@@ -30,7 +30,7 @@ CREATE TABLE form(
 `form_start_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '请假开始时间',
 `form_end_time` TIMESTAMP  DEFAULT CURRENT_TIMESTAMP COMMENT '请假结束时间',
 PRIMARY KEY (form_id)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='请假申请表';
+)ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COMMENT='请假申请表';
 
 CREATE TABLE department(
 `department_id` int NOT NULL COMMENT '部门id',

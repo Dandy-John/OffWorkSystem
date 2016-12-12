@@ -58,7 +58,6 @@
     </select>
     <insert id="addForm">
         insert into form(
-          form_id,
           user_id,
           form_state,
           form_type,
@@ -67,7 +66,6 @@
           form_end_time
         )
         values (
-          #{form.formId},
           #{form.userId},
           #{form.formState},
           #{form.formType},

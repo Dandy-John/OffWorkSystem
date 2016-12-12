@@ -11,7 +11,8 @@ public enum ResultStateEnum {
     UPDATE_FAILED(600, "数据更新错误"),
     SAME_USERNAME(601, "用户名重复"),
     INVALID_INPUT(602, "输入非法"),
-    WRONG_PASSWORD(603, "密码错误");
+    WRONG_PASSWORD(603, "密码错误"),
+    UNKNOWN_INNER_FAULT(999, "系统内部未知错误");
 
     private int state;
     private String stateInfo;
