@@ -10,8 +10,6 @@ import java.util.List;
  */
 public interface FormService {
 
-    List<Form> getFormList(int offset, int limit);
-
     int size();
 
     int addForm(int userId, int formType, int formLength, Date formStartTime, Date formEndTime);
@@ -19,4 +17,8 @@ public interface FormService {
     int advanceForm(int userId, int formId);
 
     int rejectForm(int userId, int formId);
+
+    List<Form> showVisibleFormList(int userId);
+
+    List<Form> showMyFormList(int userId);
 }

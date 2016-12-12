@@ -26,14 +26,6 @@ public class FormServiceTest {
     private FormService formService;
 
     @Test
-    public void getFormList() throws Exception {
-        List<Form> formList = formService.getFormList(0, formService.size());
-        for (Form form : formList) {
-            System.out.println(form);
-        }
-    }
-
-    @Test
     public void size() throws Exception {
         int size = formService.size();
         System.out.println("size:" + size);

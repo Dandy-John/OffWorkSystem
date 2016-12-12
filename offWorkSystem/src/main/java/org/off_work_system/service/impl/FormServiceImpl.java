@@ -11,6 +11,7 @@ import org.off_work_system.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +39,10 @@ public class FormServiceImpl implements FormService {
     }
 
     public int addForm(int userId, int formType, int formLength, Date formStartTime, Date formEndTime) {
+        FormTypeEnum formTypeEnum = FormTypeEnum.stateof(formType);
+        if (formEndTime == null) {
+            return 602;
+        }
         Form form = Form.getInstance(0, userId, 1, formType, formLength, formStartTime, formEndTime);
         int result = formDao.addForm(form);
         if (result != 0) {
@@ -207,10 +212,12 @@ public class FormServiceImpl implements FormService {
 
     //flowType: 0代表短流程（只通过科室主任一步审核）, 1代表长流程（还需要上级部门审核）, 2代表长流程且需要领导审核
     private int permission(int flowType, Form form, User user) {
+        /*
         if (form.getUser().getUserId() == user.getUserId()) {
             //本人查看
             return 200;
         }
+        */
 
         int formState = form.getFormState();
         if (formState == 0 || formState == -1) {
@@ -283,5 +290,37 @@ public class FormServiceImpl implements FormService {
                 return 999;
             }
         }
+    }
+
+    public List<Form> showVisibleFormList(int userId) {
+        User user = userDao.queryById(userId);
+        if (user == null) {
+            return null;
+        }
+        List<Form> formList = formDao.queryAll(0, userDao.size());
+        List<Form> result = new ArrayList<Form>();
+        for (Form form : formList) {
+            if (isVisible(form.getFormId(), userId) == 200) {
+                form.setUser(null); //form内的user中存储着用户个人信息，输出前需要删除
+                result.add(form);
+            }
+        }
+        return result;
+    }
+
+    public List<Form> showMyFormList(int userId) {
+        User user = userDao.queryById(userId);
+        if (user == null) {
+            return null;
+        }
+        List<Form> formList = formDao.queryAll(0, userDao.size());
+        List<Form> result = new ArrayList<Form>();
+        for (Form form : formList) {
+            if (form.getUserId() == userId) {
+                form.setUser(null); //form内的user中存储着用户个人信息，输出前需要删除
+                result.add(form);
+            }
+        }
+        return result;
     }
 }

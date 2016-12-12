@@ -3,9 +3,11 @@ package org.off_work_system.web;
 import org.apache.ibatis.annotations.Param;
 import org.off_work_system.dto.ResultWrapper;
 import org.off_work_system.entity.Department;
+import org.off_work_system.entity.Form;
 import org.off_work_system.entity.User;
 import org.off_work_system.enums.ResultStateEnum;
 import org.off_work_system.service.DepartmentService;
+import org.off_work_system.service.FormService;
 import org.off_work_system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,9 @@ public class UserController {
 
     @Autowired
     private DepartmentService departmentService;
+
+    @Autowired
+    private FormService formService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(@CookieValue(value = "userVerify", required = false) String userVerify, Model model) {
@@ -416,6 +421,42 @@ public class UserController {
         }
         else {
             return new ResultWrapper<User>(isMyself, null);
+        }
+    }
+
+    @RequestMapping(
+            value = "/api/approveList",
+            method = RequestMethod.GET,
+            produces = {"application/json;charset=UTF-8"}
+    )
+    @ResponseBody
+    public ResultWrapper<List<Form>> approveList(
+            @CookieValue(value = "userVerify", required = false) String userVerify) {
+        ResultWrapper<User> wrapper = isLoginAPI(userVerify);
+        if (!wrapper.isSuccess()) {
+            return new ResultWrapper<List<Form>>(wrapper.getState(), null);
+        }
+        else {
+            List<Form> formList = formService.showVisibleFormList(wrapper.getData().getUserId());
+            return new ResultWrapper<List<Form>>(200, formList);
+        }
+    }
+
+    @RequestMapping(
+            value = "/api/myApplicationList",
+            method = RequestMethod.GET,
+            produces = {"application/json;charset=UTF-8"}
+    )
+    @ResponseBody
+    public ResultWrapper<List<Form>> myApplicationList(
+            @CookieValue(value = "userVerify", required = false) String userVerify) {
+        ResultWrapper<User> wrapper = isLoginAPI(userVerify);
+        if (!wrapper.isSuccess()) {
+            return new ResultWrapper<List<Form>>(wrapper.getState(), null);
+        }
+        else {
+            List<Form> formList = formService.showMyFormList(wrapper.getData().getUserId());
+            return new ResultWrapper<List<Form>>(200, formList);
         }
     }
 
