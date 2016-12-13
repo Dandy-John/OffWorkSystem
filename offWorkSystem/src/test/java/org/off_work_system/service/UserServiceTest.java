@@ -31,6 +31,16 @@ public class UserServiceTest {
     }
 
     @Test
+    public void queryByDepartment() throws Exception {
+        int userDepartment = 1003;
+        List<User> userList = userService.queryByDepartment(userDepartment);
+        System.out.println("userList size: " + userList.size());
+        for (User user : userList) {
+            System.out.println(user);
+        }
+    }
+
+    @Test
     public void getUser() throws Exception {
         int userId = 1111;
         User user = userService.getUser(userId);

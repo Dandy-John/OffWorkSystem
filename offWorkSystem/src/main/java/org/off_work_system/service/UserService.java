@@ -10,9 +10,11 @@ import java.util.List;
  */
 public interface UserService {
 
-    List<User> getUserList() throws PermissionDeniedException;
+    List<User> getUserList();
 
-    User getUser(int userId) throws PermissionDeniedException;
+    List<User> queryByDepartment(int userDepartment);
+
+    User getUser(int userId);
 
     User checkUser(String username, String password);
 

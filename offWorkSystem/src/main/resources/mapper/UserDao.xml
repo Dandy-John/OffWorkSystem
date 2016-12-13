@@ -58,6 +58,25 @@
         order by u.user_id
         limit #{offset}, #{limit};
     </select>
+    <select id="queryByDepartment" resultType="User">
+        SELECT
+          u.user_id,
+          u.user_username,
+          u.user_password,
+          u.user_name,
+          u.user_sex,
+          u.user_age,
+          u.user_department,
+          u.user_leader,
+          u.user_time_left,
+          d.department_id "department.department_id",
+          d.department_name "department.department_name",
+          d.department_parent "department.department_parent"
+        from user u
+        inner join department d on u.user_department  = d.department_id
+        where u.user_department = #{userDepartment}
+        order by u.user_id
+    </select>
     <insert id="addUser">
         insert into user(
           user_username,

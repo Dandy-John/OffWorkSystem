@@ -96,7 +96,7 @@ public class UserController {
                        Model model) {
         int result = isAdminAPI(userVerify).getState();
         if (result == 200) {
-            User user = getByIdAPI(userId).getData();
+            User user = getByIdAPI(userVerify, userId).getData();
             List<Department> departmentList = getAllDepartmentsAPI(userVerify).getData();
             model.addAttribute("user", user);
             model.addAttribute("departments", departmentList);
@@ -176,6 +176,7 @@ public class UserController {
 
     @RequestMapping(value = "/api/list", method = RequestMethod.GET)
     @ResponseBody
+    //返回所有的用户列表，需要cookie存储的登录信息是具有用户管理权限的用户
     public ResultWrapper<List<User>> listAPI(@CookieValue(value = "userVerify", required = false) String userVerify) {
         if (userVerify == null) {
             return new ResultWrapper<List<User>>(490, null);
@@ -195,7 +196,13 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
-    public ResultWrapper<User> getByIdAPI(@PathVariable("userId") int userId) {
+    //传入用户的id，返回用户信息，需要cookie中有具有管理员权限的用户
+    public ResultWrapper<User> getByIdAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
+                                          @ModelAttribute("userId") int userId) {
+        int permission = userService.verifyCookieOfAdmin(userVerify);
+        if (permission != 200) {
+            return new ResultWrapper<User>(permission, null);
+        }
         User user = userService.getUser(userId);
         int result = user == null ? 404 : 200;
         return new ResultWrapper<User>(result, user);
@@ -207,6 +214,7 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
+    //传入用户名和密码，如果用户名和密码正确，则设置相应的cookie。返回登录结果状态码
     public ResultWrapper<User> loginAPI(@ModelAttribute("username") String username,
                                      @ModelAttribute("password") String password,
                                      HttpServletResponse response) {
@@ -232,6 +240,7 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
+    //根据cookie判断是否已登录，返回登录状态码
     public ResultWrapper<User> isLoginAPI(@CookieValue(value = "userVerify", required = false) String userVerify) {
         User user = userService.isLogin(userVerify);
         if (user != null) {
@@ -248,6 +257,7 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
+    //消除登录cookie
     public ResultWrapper<User> logoutAPI(HttpServletResponse response) {
         Cookie cookie = new Cookie("userVerify", null);
         cookie.setMaxAge(0);
@@ -262,6 +272,7 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
+    //编辑用户，更新用户信息，更新的用户的id为传入的id
     public ResultWrapper<User> editAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
                                        @ModelAttribute("userId") int userId,
                                        @ModelAttribute("userName") String userName,
@@ -286,6 +297,7 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
+    //传入id,将该id的用户的密码重置为六个零，需要cookie中有权限为管理员的用户
     public ResultWrapper<User> resetPasswordAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
                                                 @ModelAttribute("userId") int userId) {
         int permission = userService.verifyCookieOfAdmin(userVerify);
@@ -304,6 +316,7 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
+    //判断当前cookie中存储的用户是否具有管理员权限。（三个顶层部门的领导具有管理员权限）
     public ResultWrapper<User> isAdminAPI(@CookieValue(value = "userVerify", required = false) String userVerify) {
         return new ResultWrapper<User>(userService.verifyCookieOfAdmin(userVerify), null);
     }
@@ -314,6 +327,7 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
+    //获取所有的部门信息，需要当前cookie中是合法的未过期的登录用户
     public ResultWrapper<List<Department>> getAllDepartmentsAPI(@CookieValue("userVerify") String userVerify) {
         if (isLoginAPI(userVerify).isSuccess()) {
             List<Department> departmentList = departmentService.queryAll();
@@ -330,6 +344,7 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
+    //输入用户id，删除该id的用户，需要cookie中存储的是具有管理员权限的用户
     public ResultWrapper<User> deleteAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
                                          @ModelAttribute("userId") int userId) {
         int result = isAdminAPI(userVerify).getState();
@@ -348,6 +363,7 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
+    //添加一个新用户，需要cookie中是具有管理员权限的用户
     public ResultWrapper<User> addAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
                                       @ModelAttribute("userUsername") String userUsername,
                                       @ModelAttribute("userName") String userName,
@@ -378,6 +394,7 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
+    //输入一个id，输出这个id与当前cookie中的用户是否是同一个人
     public ResultWrapper<User> isMyselfAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
                                         @ModelAttribute("userId") int userId) {
         int isMyself = userService.isMyself(userVerify, userId);
@@ -390,6 +407,7 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
+    //编辑自己的信息，需要cookie中具有已登录的用户
     public ResultWrapper<User> editMyselfAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
                                              @ModelAttribute("userName") String userName,
                                              @ModelAttribute("userSex") String userSex,
@@ -410,6 +428,7 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
+    //输入用户id、旧密码和新密码,更改密码，需要输入的id与cookie中存储的登录用户是同一个人
     public ResultWrapper<User> changePasswordAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
                                                  @ModelAttribute("userId") int userId,
                                                  @ModelAttribute("oldPassword") String oldPassword,
@@ -430,6 +449,7 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
+    //获取所有需要自己审批的申请信息，需要cookie中存储有具有管库员权限的用户
     public ResultWrapper<List<Form>> approveList(
             @CookieValue(value = "userVerify", required = false) String userVerify) {
         ResultWrapper<User> wrapper = isLoginAPI(userVerify);
@@ -448,6 +468,7 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
+    //查看自己的所有请假申请，需要cookie中存储有登录的用户
     public ResultWrapper<List<Form>> myApplicationList(
             @CookieValue(value = "userVerify", required = false) String userVerify) {
         ResultWrapper<User> wrapper = isLoginAPI(userVerify);

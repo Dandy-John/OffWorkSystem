@@ -16,6 +16,8 @@ public interface UserDao {
 
     List<User> queryAll(@Param("offset") int offset, @Param("limit") int limit);
 
+    List<User> queryByDepartment(@Param("userDepartment") int userDepartment);
+
     int addUser(@Param("user") User user);
 
     int deleteById(@Param("userId") int userId);

@@ -25,11 +25,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private DepartmentDao departmentDao;
 
-    public List<User> getUserList() throws PermissionDeniedException {
+    public List<User> getUserList() {
         return userDao.queryAll(0, userDao.size());
     }
 
-    public User getUser(int userId) throws PermissionDeniedException {
+    public List<User> queryByDepartment(int userDepartment) {
+        return userDao.queryByDepartment(userDepartment);
+    }
+
+    public User getUser(int userId) {
         return userDao.queryById(userId);
     }
 

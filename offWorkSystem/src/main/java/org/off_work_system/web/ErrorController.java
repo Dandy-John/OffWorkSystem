@@ -21,6 +21,7 @@ public class ErrorController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
+    //传入错误序号，返回错误描述
     public ResultWrapper<String> getErrorInfoAPI(@ModelAttribute("state") int state) {
          ResultStateEnum stateEnum = ResultStateEnum.stateof(state);
          if (stateEnum == null) {

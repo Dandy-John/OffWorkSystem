@@ -51,6 +51,15 @@ public class UserDaoTest {
         }
     }
 
+    @Test
+    public void queryByDepartment() throws Exception {
+        int userDepartment = 1000;
+        List<User> userList = userDao.queryByDepartment(userDepartment);
+        for (User user : userList) {
+            System.out.println(user);
+        }
+    }
+
     /*
     单元测试
      */
