@@ -44,6 +44,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     public int deleteDepartment(int departmentId) {
         Department department = departmentDao.queryById(departmentId);
+        if (department == null) {
+            return 602;
+        }
         if (department.getDepartmentParent() == -1) {
             return 604;
         }

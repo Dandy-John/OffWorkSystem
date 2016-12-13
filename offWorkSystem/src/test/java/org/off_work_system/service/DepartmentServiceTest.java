@@ -32,4 +32,22 @@ public class DepartmentServiceTest {
         }
     }
 
+    @Test
+    public void queryById() throws Exception {
+        int departmentId = 1001;
+        Department department = departmentService.queryById(departmentId);
+        System.out.println(department);
+    }
+
+    @Test
+    public void addDepartment() throws Exception {
+        Department department = departmentService.addDepartment("测试部", 101);
+        System.out.println(department);
+    }
+
+    @Test
+    public void deleteDepartment() throws Exception {
+        int result = departmentService.deleteDepartment(1001);
+        System.out.println(result);
+    }
 }
