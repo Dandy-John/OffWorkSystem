@@ -16,6 +16,8 @@ public interface DepartmentDao {
 
     int addDepartment(@Param("department") Department department);
 
+    int getMaxId();
+
     int deleteById(@Param("departmentId") int departmentId);
 
     int updateDepartment(@Param("department") Department department);

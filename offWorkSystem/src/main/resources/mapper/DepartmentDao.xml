@@ -43,6 +43,9 @@
           department_parent = #{department.departmentParent}
         where department_id = #{department.departmentId};
     </update>
+    <select id="getMaxId" resultType="int">
+        select max(department_id) from department;
+    </select>
     <select id="size" resultType="int">
         select count(*) from department;
     </select>

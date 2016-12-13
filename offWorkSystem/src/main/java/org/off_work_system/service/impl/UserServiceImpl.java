@@ -58,11 +58,13 @@ public class UserServiceImpl implements UserService {
             return 490;
         }
 
-        System.out.println(userVerify);
+        //System.out.println(userVerify);
         String[] userStr = userVerify.split("\\|");
+        /*
         for (String str : userStr) {
             System.out.println(str);
         }
+        */
         String username = userStr[0];
         String password = userStr[1];
         String timeStr = userStr[2];

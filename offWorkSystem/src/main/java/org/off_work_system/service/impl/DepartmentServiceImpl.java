@@ -20,4 +20,39 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<Department> queryAll() {
         return departmentDao.queryAll(0, departmentDao.size());
     }
+
+    public Department queryById(int departmentId) {
+        Department department = departmentDao.queryById(departmentId);
+        return department;
+    }
+
+    public Department addDepartment(String departmentName, int departmentParent) {
+        int departmentId = departmentDao.getMaxId() + 1;
+        Department parent = departmentDao.queryById(departmentParent);
+        if (parent == null) {
+            return null;
+        }
+        Department department = Department.getInstance(departmentId, departmentName, departmentParent);
+        int result = departmentDao.addDepartment(department);
+        if (result != 0) {
+            return department;
+        }
+        else {
+            return null;
+        }
+    }
+
+    public int deleteDepartment(int departmentId) {
+        Department department = departmentDao.queryById(departmentId);
+        if (department.getDepartmentParent() == -1) {
+            return 604;
+        }
+        int result = departmentDao.deleteById(departmentId);
+        if (result != 0) {
+            return 200;
+        }
+        else {
+            return 600;
+        }
+    }
 }

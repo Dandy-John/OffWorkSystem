@@ -12,6 +12,7 @@ public enum ResultStateEnum {
     SAME_USERNAME(601, "用户名重复"),
     INVALID_INPUT(602, "输入非法"),
     WRONG_PASSWORD(603, "密码错误"),
+    CANT_DELETE(604, "不能删除顶层部门"),
     UNKNOWN_INNER_FAULT(999, "系统内部未知错误");
 
     private int state;
