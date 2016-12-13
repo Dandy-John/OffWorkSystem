@@ -8,12 +8,12 @@
 <body>
 <script>
     $.get("/off_work_system/user/api/islogin", function(result){
-        console.log(result);
+        //console.log(result);
         if (result.state == 200) {
             var info = '你好，' + result.data.userName + ' <a href="javascript:logout();">退出登录</a>';
             info += ' <a href="/off_work_system/user/edit">编辑个人信息</a>';
-            console.log(result.data.department.departmentParent);
-            console.log(result.data.userLeader);
+            //console.log(result.data.department.departmentParent);
+            //console.log(result.data.userLeader);
             if (result.data.department.departmentParent == -1 && result.data.userLeader == 1) {
                 info += ' <a href="/off_work_system/user/list" target="_blank">用户管理</a>'
             }

@@ -8,6 +8,7 @@ import org.off_work_system.exception.PermissionDeniedException;
 import org.off_work_system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -18,6 +19,8 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
+
+    private final String slat = "^GJA((afa&!fs330HLAaSG)*1^as&@@FJSCahs";
 
     @Autowired
     private UserDao userDao;
@@ -37,8 +40,22 @@ public class UserServiceImpl implements UserService {
         return userDao.queryById(userId);
     }
 
+    private String md5(String password) {
+        password += slat;
+        return DigestUtils.md5DigestAsHex(password.getBytes());
+    }
+
+    //这里输入的password是未加密的，加密后传入dao层
     public User checkUser(String username, String password) {
-        User user = userDao.tryLogin(username, password);
+        User user = userDao.tryLogin(username, md5(password));
+        if (user != null) {
+            user.setUserPassword(md5(password));
+        }
+        return user;
+    }
+
+    public User checkUserWithMd5(String username, String passwordWithMd5) {
+        User user = userDao.tryLogin(username, passwordWithMd5);
         return user;
     }
 
@@ -83,7 +100,7 @@ public class UserServiceImpl implements UserService {
             return 490;
         }
 
-        User user = checkUser(username, password);
+        User user = checkUserWithMd5(username, password);
         if (user == null) {
             return 490;
         }
@@ -116,7 +133,7 @@ public class UserServiceImpl implements UserService {
             return null;
         }
 
-        User user = checkUser(username, password);
+        User user = checkUserWithMd5(username, password);
         return user;
     }
 
@@ -143,7 +160,7 @@ public class UserServiceImpl implements UserService {
     public int resetPassword(int userId) {
         String password = "000000";
         User user = getUser(userId);
-        user.setUserPassword(password);
+        user.setUserPassword(md5(password));
         int result = userDao.updateUser(user);
         if (result != 0) {
             return 200;
@@ -170,9 +187,11 @@ public class UserServiceImpl implements UserService {
                        int userDepartment,
                        int userLeader,
                        int userTimeLeft) {
+        String userPassword = "000000";
+        userPassword = md5(userPassword);
         User user = User.getInstance(0,
                 userUsername,
-                "000000",
+                userPassword,
                 userName,
                 userSex,
                 userAge,
@@ -241,6 +260,8 @@ public class UserServiceImpl implements UserService {
     }
 
     public int changeMyPassword(int userId, String oldPassword, String newPassword) {
+        oldPassword = md5(oldPassword);
+        newPassword = md5(newPassword);
         User user = userDao.queryById(userId);
         if (user.getUserPassword().equals(oldPassword)) {
             user.setUserPassword(newPassword);

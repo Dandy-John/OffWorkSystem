@@ -18,6 +18,8 @@ public interface UserService {
 
     User checkUser(String username, String password);
 
+    User checkUserWithMd5(String username, String passwordWithMd5);
+
     boolean isAdmin(int userId);
 
     int verifyCookieOfAdmin(String userVerify);

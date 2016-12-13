@@ -57,13 +57,20 @@ public class UserServiceTest {
 
     @Test
     public void addUser() throws Exception {
-        int result = userService.addUser("abc",
-                "testUsr",
+        int result = userService.addUser("aaaa",
+                "User",
                 "男",
                 18,
                 1001,
                 0,
                 12);
+        System.out.println(result);
+    }
+
+    @Test
+    public void deleteById() throws Exception {
+        int userId = 1014;
+        int result = userService.deleteById(userId);
         System.out.println(result);
     }
 }

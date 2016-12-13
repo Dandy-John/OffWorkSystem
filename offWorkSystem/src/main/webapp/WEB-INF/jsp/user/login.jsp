@@ -147,7 +147,20 @@
                     alert("登录成功");
                     window.location.href = "/off_work_system";
                 }
-            })
+                else {
+                    //console.log("failed.");
+                    $.post("/off_work_system/error/api/getErrorInfo", {'state' : result.state}, function(r) {
+                        var message;
+                        if (r.state == 200) {
+                            message = r.data;
+                        }
+                        else {
+                            message = '未知错误';
+                        }
+                        alert("登录失败\n" + message);
+                    });
+                }
+            });
         }
     }
 </script>

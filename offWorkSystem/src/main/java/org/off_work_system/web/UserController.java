@@ -221,7 +221,7 @@ public class UserController {
         User user = userService.checkUser(username, password);
         if (user != null) {
             Date now = new Date();
-            String combine = username + "|" + password + "|" + now.getTime();
+            String combine = user.getUserUsername() + "|" + user.getUserPassword() + "|" + now.getTime();
             //System.out.println(combine);
             Cookie cookie = new Cookie("userVerify", combine);
             cookie.setPath("/");
@@ -230,7 +230,7 @@ public class UserController {
             return new ResultWrapper<User>(200, user);
         }
         else {
-            return new ResultWrapper<User>(404, null);
+            return new ResultWrapper<User>(603, null);
         }
     }
 
