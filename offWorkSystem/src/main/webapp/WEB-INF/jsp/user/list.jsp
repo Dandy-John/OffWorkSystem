@@ -24,6 +24,7 @@
                     <th>所属部门</th>
                     <th>是否是部门领导</th>
                     <th>剩余年假</th>
+                    <td>是否是管理员</td>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -39,6 +40,7 @@
                         <td>${user.department.departmentName}</td>
                         <td>${user.userLeader == 1 ? "是" : "否"}</td>
                         <td>${user.userTimeLeft} 天</td>
+                        <td>${user.isAdmin == 1 ? "是" : "否"}</td>
                         <td><a href="/off_work_system/user/${user.userId}/edit">编辑</a> <a href="javascript:deleteUser(${user.userId})">删除</a></td>
                     </tr>
                 </c:forEach>

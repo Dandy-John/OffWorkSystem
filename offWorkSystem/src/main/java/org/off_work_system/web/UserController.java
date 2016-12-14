@@ -280,10 +280,11 @@ public class UserController {
                                        @ModelAttribute("userAge") int userAge,
                                        @ModelAttribute("userDepartment") int userDepartment,
                                        @ModelAttribute("userLeader") int userLeader,
-                                       @ModelAttribute("userTimeLeft") int userTimeLeft) {
+                                       @ModelAttribute("userTimeLeft") int userTimeLeft,
+                                       @ModelAttribute("isAdmin") int isAdmin) {
         int permission = userService.verifyCookieOfAdmin(userVerify);
         if (permission == 200) {
-            int result = userService.updateUser(userId, userName, userSex, userAge, userDepartment, userLeader, userTimeLeft);
+            int result = userService.updateUser(userId, userName, userSex, userAge, userDepartment, userLeader, userTimeLeft, isAdmin);
             return new ResultWrapper<User>(result, null);
         }
         else {
@@ -371,7 +372,8 @@ public class UserController {
                                       @ModelAttribute("userAge") int userAge,
                                       @ModelAttribute("userDepartment") int userDepartment,
                                       @ModelAttribute("userLeader") int userLeader,
-                                      @ModelAttribute("userTimeLeft") int userTimeLeft) {
+                                      @ModelAttribute("userTimeLeft") int userTimeLeft,
+                                      @ModelAttribute("isAdmin") int isAdmin) {
         int permission = isAdminAPI(userVerify).getState();
         if (permission == 200) {
             int result = userService.addUser(userUsername,
@@ -380,7 +382,8 @@ public class UserController {
                     userAge,
                     userDepartment,
                     userLeader,
-                    userTimeLeft);
+                    userTimeLeft,
+                    isAdmin);
             return new ResultWrapper<User>(result, null);
         }
         else {

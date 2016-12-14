@@ -35,7 +35,7 @@ public class UserDaoTest {
 
     @Test
     public void queryByUsername() throws Exception {
-        String username = "abc";
+        String username = "y1";
         User user = userDao.queryByUsername(username);
         System.out.println(user);
     }
@@ -73,7 +73,8 @@ public class UserDaoTest {
                 12,
                 1000,
                 0,
-                11);
+                11,
+                0);
         int result = userDao.addUser(user);
         System.out.println(result);
     }
@@ -83,7 +84,7 @@ public class UserDaoTest {
      */
     @Test
     public void deleteById() throws Exception {
-        int id = 1111;
+        int id = 1013;
         int result = userDao.deleteById(id);
         System.out.println(result);
     }
@@ -93,7 +94,7 @@ public class UserDaoTest {
      */
     @Test
     public void updateUser() throws Exception {
-        User user = User.getInstance(1111,
+        User user = User.getInstance(1014,
                 "dec",
                 "123321",
                 "test123",
@@ -101,15 +102,16 @@ public class UserDaoTest {
                 11,
                 1001,
                 0,
-                22);
+                22,
+                1);
         int result = userDao.updateUser(user);
         System.out.println(result);
     }
 
     @Test
     public void tryLogin() throws Exception {
-        String username = "abc";
-        String password = "123";
+        String username = "dec";
+        String password = "123321";
         User user = userDao.tryLogin(username, password);
         System.out.println(user);
     }

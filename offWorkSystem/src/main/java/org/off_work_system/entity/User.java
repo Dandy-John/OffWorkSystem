@@ -31,6 +31,8 @@ public class User {
     //用户剩余年假天数
     private int userTimeLeft;
 
+    private int isAdmin;
+
     //用户所属部门的实例
     private Department department;
 
@@ -42,7 +44,8 @@ public class User {
                                    int userAge,
                                    int userDepartment,
                                    int userLeader,
-                                   int userTimeLeft) {
+                                   int userTimeLeft,
+                                   int isAdmin) {
         User user = new User();
         user.setUserId(userId);
         user.setUserUsername(userUsername);
@@ -54,6 +57,7 @@ public class User {
         user.setUserLeader(userLeader);
         user.setUserTimeLeft(userTimeLeft);
         user.setDepartment(null);
+        user.setIsAdmin(isAdmin);
 
         return user;
     }
@@ -130,6 +134,14 @@ public class User {
         this.userTimeLeft = userTimeLeft;
     }
 
+    public int getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(int isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
     public Department getDepartment() {
         return department;
     }
@@ -157,6 +169,7 @@ public class User {
                 ",\nuserDepartment=" + userDepartment +
                 ",\nuserLeader=" + userLeader +
                 ",\nuserTimeLeft=" + userTimeLeft +
+                ",\nisAdmin=" + isAdmin +
                 ",\ndepartment=" + de +
                 '}';
     }

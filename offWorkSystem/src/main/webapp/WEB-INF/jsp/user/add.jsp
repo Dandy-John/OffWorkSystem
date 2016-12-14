@@ -27,7 +27,10 @@
                 </div>
                 <div>
                     <label class="control-label">性别</label>
-                    <input type="text" id="userSex" />
+                    <select id="userSex">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
                 </div>
                 <div>
                     <label class="control-label">年龄</label>
@@ -54,6 +57,13 @@
                     <input type="text" id="userTimeLeft" />
                 </div>
                 <div>
+                    <label class="control-label">是否是管理员</label>
+                    <select id="isAdmin">
+                        <option value="1">是</option>
+                        <option value="0">否</option>
+                    </select>
+                </div>
+                <div>
                     <input type="button" class="btn btn-primary" id="submit" value="新增" onclick="submitForm()"/>
                     <input type="button" class="btn" id="cancel" value="取消" onclick="cancelAdd()" />
                 </div>
@@ -71,16 +81,13 @@
         var userDepartment = $('#userDepartment').val();
         var userLeader = $('#userLeader').val();
         var userTimeLeft = $('#userTimeLeft').val();
+        var isAdmin = $('#isAdmin').val();
         if (userUsername == "") {
             alert("用户名不能为空");
             return;
         }
         if (userName == "") {
             alert("姓名不能为空");
-            return;
-        }
-        if (userSex != "男" && userSex != "女") {
-            alert("性别必须是男或女");
             return;
         }
         if (userAge == "") {
@@ -106,7 +113,8 @@
             + userAge + " "
             + userDepartment + " "
             + userLeader + " "
-            + userTimeLeft + " ");
+            + userTimeLeft + " "
+            + isAdmin);
 
         $.post("/off_work_system/user/api/add", {
             'userUsername' : userUsername,
@@ -115,7 +123,8 @@
             'userAge' : +userAge,
             'userDepartment' : +userDepartment,
             'userLeader' : +userLeader,
-            'userTimeLeft' : +userTimeLeft
+            'userTimeLeft' : +userTimeLeft,
+            'isAdmin' : isAdmin
         }, function(result) {
             if (result.state == 200) {
                 alert("添加成功");

@@ -38,7 +38,10 @@
                 </div>
                 <div>
                     <label class="control-label">性别</label>
-                    <input type="text" id="userSex" value="${user.userSex}" />
+                    <select id="userSex">
+                        <option value="男" ${user.userSex.equals("男") ? "selected=\"selected\"" : ""}>男</option>
+                        <option value="女" ${user.userSex.equals("女") ? "selected=\"selected\"" : ""}>女</option>
+                    </select>
                 </div>
                 <div>
                     <label class="control-label">年龄</label>

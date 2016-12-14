@@ -65,8 +65,11 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean isAdmin(User user) {
-        int departmentParent = user.getDepartment().getDepartmentParent();
-        if (departmentParent == -1 && user.getUserLeader() == 1) {
+        if (user == null) {
+            return false;
+        }
+        int isAdmin = user.getIsAdmin();
+        if (isAdmin == 1) {
             return true;
         }
         else {
@@ -137,7 +140,30 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    public int updateUser(int userId, String userName, String userSex, int userAge, int userDepartment, int userLeader, int userTimeLeft) {
+    public int updateUser(int userId, String userName, String userSex, int userAge,
+                          int userDepartment, int userLeader, int userTimeLeft, int isAdmin) {
+        //非法输入检查
+        //避免用户采取某些方法绕过了前台检查
+        if (!userSex.equals("男") && !userSex.equals("女")) {
+            return 602;
+        }
+        if (userAge <= 0) {
+            return 602;
+        }
+        Department department = departmentDao.queryById(userDepartment);
+        if (department == null) {
+            return 602;
+        }
+        if (userLeader != 0 && userLeader != 1) {
+            return 602;
+        }
+        if (userTimeLeft < 0) {
+            return 602;
+        }
+        if (isAdmin != 0 && isAdmin != 1) {
+            return 602;
+        }
+
         User oldUser = getUser(userId);
         User newUser = User.getInstance(userId,
                 oldUser.getUserUsername(),
@@ -147,7 +173,8 @@ public class UserServiceImpl implements UserService {
                 userAge,
                 userDepartment,
                 userLeader,
-                userTimeLeft);
+                userTimeLeft,
+                isAdmin);
         int result = userDao.updateUser(newUser);
         if (result != 0) {
             return 200;
@@ -186,7 +213,8 @@ public class UserServiceImpl implements UserService {
                        int userAge,
                        int userDepartment,
                        int userLeader,
-                       int userTimeLeft) {
+                       int userTimeLeft,
+                       int isAdmin) {
         String userPassword = "000000";
         userPassword = md5(userPassword);
         User user = User.getInstance(0,
@@ -197,7 +225,8 @@ public class UserServiceImpl implements UserService {
                 userAge,
                 userDepartment,
                 userLeader,
-                userTimeLeft);
+                userTimeLeft,
+                isAdmin);
         User sameUsername = userDao.queryByUsername(userUsername);
         if (sameUsername != null) {
             return 601;
@@ -219,6 +248,9 @@ public class UserServiceImpl implements UserService {
                 return 602;
             }
             if (userTimeLeft < 0) {
+                return 602;
+            }
+            if (isAdmin != 0 && isAdmin != 1) {
                 return 602;
             }
 

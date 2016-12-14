@@ -28,7 +28,10 @@
                 </div>
                 <div>
                     <label class="control-label">性别</label>
-                    <input type="text" id="userSex" value="${user.userSex}" />
+                    <select id="userSex">
+                        <option value="男" ${user.userSex.equals("男") ? "selected=\"selected\"" : ""}>男</option>
+                        <option value="女" ${user.userSex.equals("女") ? "selected=\"selected\"" : ""}>女</option>
+                    </select>
                 </div>
                 <div>
                     <label class="control-label">年龄</label>
@@ -55,6 +58,13 @@
                     <input type="text" id="userTimeLeft" value="${user.userTimeLeft}" />
                 </div>
                 <div>
+                    <label class="control-label">是否是管理员</label>
+                    <select id="isAdmin">
+                        <option value="1" ${user.isAdmin == 1 ? "selected=\"selected\"" : ""}>是</option>
+                        <option value="0" ${user.isAdmin == 0 ? "selected=\"selected\"" : ""}>否</option>
+                    </select>
+                </div>
+                <div>
                     <input type="button" class="btn btn-primary" id="submit" value="更改" onclick="submitForm()"/>
                     <input type="button" class="btn" id="cancel" value="取消" onclick="cancelEdit()" />
                 </div>
@@ -72,12 +82,9 @@
         var userDepartment = $('#userDepartment').val();
         var userLeader = $('#userLeader').val();
         var userTimeLeft = $('#userTimeLeft').val();
+        var isAdmin = $('#isAdmin').val();
         if (userName == "") {
             alert("姓名不能为空");
-            return;
-        }
-        if (userSex != "男" && userSex != "女") {
-            alert("性别必须是男或女");
             return;
         }
         if (userAge == "") {
@@ -103,7 +110,8 @@
             + userAge + " "
             + userDepartment + " "
             + userLeader + " "
-            + userTimeLeft + " ");
+            + userTimeLeft + " "
+            + isAdmin);
 
         $.post("/off_work_system/user/api/edit", {
             'userId' : userId,
@@ -112,7 +120,8 @@
             'userAge' : +userAge,
             'userDepartment' : +userDepartment,
             'userLeader' : +userLeader,
-            'userTimeLeft' : +userTimeLeft
+            'userTimeLeft' : +userTimeLeft,
+            'isAdmin' : isAdmin
         }, function(result) {
             if (result.state == 200) {
                 alert("更改成功");

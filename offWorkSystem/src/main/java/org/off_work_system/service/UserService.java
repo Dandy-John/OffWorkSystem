@@ -26,13 +26,13 @@ public interface UserService {
 
     User isLogin(String userVerify);
 
-    int updateUser(int userId, String userName, String userSex, int userAge, int userDepartment, int userLeader, int userTimeLeft);
+    int updateUser(int userId, String userName, String userSex, int userAge, int userDepartment, int userLeader, int userTimeLeft, int isAdmin);
 
     int resetPassword(int userId);
 
     int deleteById(int userId);
 
-    int addUser(String userUsername, String userName, String userSex, int userAge, int userDepartment, int userLeader, int userTimeLeft);
+    int addUser(String userUsername, String userName, String userSex, int userAge, int userDepartment, int userLeader, int userTimeLeft, int isAdmin);
 
     int isMyself(String userVerify, int userId);
 

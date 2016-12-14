@@ -42,15 +42,15 @@ public class UserServiceTest {
 
     @Test
     public void getUser() throws Exception {
-        int userId = 1111;
+        int userId = 1000;
         User user = userService.getUser(userId);
         System.out.println(user);
     }
 
     @Test
     public void checkUser() throws Exception {
-        String username = "abc";
-        String password = "123";
+        String username = "y1";
+        String password = "000000";
         User user = userService.checkUser(username, password);
         System.out.println(user);
     }
@@ -63,13 +63,14 @@ public class UserServiceTest {
                 18,
                 1001,
                 0,
-                12);
+                12,
+                0);
         System.out.println(result);
     }
 
     @Test
     public void deleteById() throws Exception {
-        int userId = 1014;
+        int userId = 1015;
         int result = userService.deleteById(userId);
         System.out.println(result);
     }
