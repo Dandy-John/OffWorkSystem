@@ -18,11 +18,15 @@
                 info += ' <a href="/off_work_system/user/list" target="_blank">用户管理</a>'
             }
             $('#userInfo').html(info);
+
+            /// TODO 应当更改为controller里的url
+            window.location.href = "/off_work_system/model/queryHoliday";
         }
         else {
-            $('#userInfo').html('<a href="user/login">登录</a>');
+            window.location.href = "/off_work_system/user/login";
         }
-    })
+        console.log(result);
+    });
 
     function logout() {
         $.get('/off_work_system/user/api/logout', function(result) {
@@ -33,7 +37,6 @@
         });
     }
 </script>
-<h2>Hello World!</h2>
 <div id="userInfo"></div>
 </body>
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->

@@ -4,6 +4,16 @@
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1"
          metadata-complete="true">
+
+    <jsp-config>
+        <taglib>
+            <!-- 配置标签的引用地址 JSP页面中引用时使用-->
+            <taglib-uri>/enums</taglib-uri>
+            <!-- 配置标签的TLD文件地址 -->
+            <taglib-location>/WEB-INF/ELTag.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+
     <servlet>
         <servlet-name>off_work_system-dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -18,7 +28,7 @@
         <servlet-name>off_work_system-dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-    
+
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>

@@ -37,4 +37,13 @@ public enum FormTypeEnum {
         }
         return null;
     }
+
+    public static String typeInfoOf(int index){
+        for ( FormTypeEnum state : values()) {
+            if (state.getState() == index) {
+                return state.getStateInfo();
+            }
+        }
+        return null;
+    }
 }

@@ -33,4 +33,13 @@ public enum FormStateEnum {
         }
         return null;
     }
+
+    public static String stateInfoof(int index){
+        for (FormStateEnum state :values()) {
+            if (state.getState() == index) {
+                return state.getStateInfo();
+            }
+        }
+        return null;
+    }
 }

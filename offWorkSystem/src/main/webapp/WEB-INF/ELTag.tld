@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+    http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+    <!-- 定义函数版本 -->
+    <tlib-version>1.0</tlib-version>
+    <!-- 定义函数名称 -->
+    <short-name>el</short-name>
+    <uri>http://so.tv.sohu.com/custom/functions</uri>
+
+    <!-- 定义第一个函数 -->
+    <function>
+        <!-- 定义一个函数-->
+        <name>typeInfoOf</name>
+        <!-- 定义函数处理类 -->
+        <function-class>org.off_work_system.enums.FormTypeEnum</function-class>
+        <!-- 定义函数的对应方法 -->
+        <function-signature>
+            java.lang.String typeInfoOf(int)
+        </function-signature>
+    </function>
+
+    <function>
+        <!-- 定义一个函数-->
+        <name>stateInfoOf</name>
+        <!-- 定义函数处理类 -->
+        <function-class>org.off_work_system.enums.FormStateEnum</function-class>
+        <!-- 定义函数的对应方法 -->
+        <function-signature>
+            java.lang.String stateInfoof(int)
+        </function-signature>
+    </function>
+</taglib>
