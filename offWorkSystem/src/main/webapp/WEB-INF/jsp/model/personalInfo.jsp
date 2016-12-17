@@ -15,44 +15,29 @@
 <body>
 <%@include file="../common/title.jsp"%>
 
+<div class="jumbotron masthead">
 <div class="container">
     <div class="panel panel-default">
-        <div class="panel-heading text-center">
-            <h2>新增</h2>
+        <div class="panel-heading text-left" style="margin-top: 10px">
+            <input type="button" class="btn btn-primary" id="submit" value="修改密码" onclick="submitForm()"/>
         </div>
         <div class="panel-body" style="text-align:center">
             <form id="editForm">
-                <div>
-                    <label class="control-label">用户编号</label>
-                    <input type="text" id="userUsername" value="${user.userId}" disabled/>
-                </div>
-                <div>
-                    <label class="control-label">姓名</label>
-                    <input type="text" id="userName" value="${user.userUsername}" disabled/>
-                </div>
-                <div>
-                    <label class="control-label">性别</label>
-                    <input type="text" id="userSex" value="${user.userSex}" disabled/>
-                </div>
-                <div>
-                    <label class="control-label">年龄</label>
-                    <input type="text" id="userAge" value="${user.userAge}" disabled/>
-                </div>
-                <div>
-                    <label class="control-label">所属部门</label>
-                    <!--<input type="text" id="userDepartment" /> -->
-                    <input type="text" id="userDepartment" value="${user.userDepartment}" disabled/>
-                </div>
-                <div>
-                    <label class="control-label">剩余年假</label>
-                    <input type="text" id="userTimeLeft" value="${user.userTimeLeft}" disabled/>
-                </div>
-                <div>
-                    <input type="button" class="btn btn-primary" id="submit" value="修改密码" onclick="submitForm()"/>
-                </div>
+                <table border="1" class="table table-hover">
+                    <tbody>
+                    <tr><td>用户编号</td><td>${user.userId}</td></tr>
+                    <tr><td>用户名</td><td>${user.userUsername}</td></tr>
+                    <tr><td>姓名</td><td>${user.userName}</td></tr>
+                    <tr><td>性别</td><td>${user.userSex}</td></tr>
+                    <tr><td>年龄</td><td>${user.userAge}</td></tr>
+                    <tr><td>所属部门</td><td>${user.userDepartment}</td></tr>
+                    <tr><td>剩余年假</td><td>${user.userTimeLeft}</td></tr>
+                    </tbody>
+                </table>
             </form>
         </div>
     </div>
+</div>
 </div>
 </body>
 <script type="application/javascript">

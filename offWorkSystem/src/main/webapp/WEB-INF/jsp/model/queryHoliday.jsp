@@ -16,7 +16,8 @@
 <%@include file="../common/title.jsp"%>
 
 <c:if test="${state == 200}">
-<div class="container">
+<div class="jumbotron masthead">
+    <div class="container">
     <div class="panel panel-default">
         <div class="panel-heading text-center">
             <h2>历史假条</h2>
@@ -49,6 +50,7 @@
             </table>
         </div>
     </div>
+</div>
 </div>
 </c:if>
 </body>

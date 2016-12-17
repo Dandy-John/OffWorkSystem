@@ -16,6 +16,7 @@
 <%@include file="../common/title.jsp"%>
 
 <c:if test="${state == 200}">
+<div class="jumbotron masthead">
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading text-center">
@@ -41,7 +42,7 @@
                     <c:forEach var="form" items="${list}">
                         <tr>
                             <td>${form.formId}</td>
-                            <td>${form.user.userId}</td>
+                            <td>${form.userId}</td>
                             <td>${form.user.userName}</td>
                             <td>${enums:stateInfoOf(form.formState)}</td>
                             <td>${enums:typeInfoOf(form.formType)}</td>
@@ -72,6 +73,7 @@
             </div>
         </div>
     </div>
+</div>
 </c:if>
 </body>
 </html>

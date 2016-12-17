@@ -52,20 +52,35 @@
         else return false;
         return true;
     }
-
-    G={};
-    G.FormType = ['年假', '公假', '婚假', '产假', '工伤假', '陪产假', '病假', '事假'];
-    function toFormType(index) {
-        if(index > 0 && index <= G.FormType.length)
-        return G.FormType[index-1];
-        else return "未知类型";
-    }
 </script>
 
-<div id="title">
-    <input id="_queryHoliday" type="button" value="申请查看" onclick="changePage('queryHoliday')"/>
-    <input id="_applyHoliday" type="button" value="申请假期" onclick="changePage('applyHoliday')"/>
-    <input id="_approvalHoliday" type="button" value="审批假期" onclick="changePage('approvalHoliday')"/>
-    <input id="_personalInfo" type="button" value="个人信息" onclick="changePage('personalInfo')"/>
-    <input id="_logout" type="button" value="退出登录" onclick="changePage('logout')"/>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <p class="navbar-brand">海宁医院请假系统</p>
+        </div>
+        <div class="navbar-collapse collapse" role="navigation">
+            <ul class="nav navbar-nav">
+                <li class="hidden-sm hidden-md"><a onclick="changePage('queryHoliday')">申请查看</a></li>
+                <li><a onclick="changePage('applyHoliday')">申请假期</a></li>
+                <li><a onclick="changePage('approvalHoliday')">审批假期</a></li>
+                <li><a onclick="changePage('personalInfo')">个人信息</a></li>
+                <li><a onclick="changePage('logout')">退出登录</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
+
+<%--<div id="title">--%>
+    <%--<input id="_queryHoliday" type="button" value="申请查看" onclick="changePage('queryHoliday')"/>--%>
+    <%--<input id="_applyHoliday" type="button" value="申请假期" onclick="changePage('applyHoliday')"/>--%>
+    <%--<input id="_approvalHoliday" type="button" value="审批假期" onclick="changePage('approvalHoliday')"/>--%>
+    <%--<input id="_personalInfo" type="button" value="个人信息" onclick="changePage('personalInfo')"/>--%>
+    <%--<input id="_logout" type="button" value="退出登录" onclick="changePage('logout')"/>--%>
+<%--</div>--%>

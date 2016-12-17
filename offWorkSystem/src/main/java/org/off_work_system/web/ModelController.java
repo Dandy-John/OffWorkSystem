@@ -5,6 +5,7 @@ import org.off_work_system.entity.Department;
 import org.off_work_system.entity.Form;
 import org.off_work_system.entity.User;
 import org.off_work_system.enums.FormTypeEnum;
+import org.off_work_system.enums.ResultStateEnum;
 import org.off_work_system.service.DepartmentService;
 import org.off_work_system.service.FormService;
 import org.off_work_system.service.UserService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -67,7 +69,7 @@ public class ModelController {
         Date formEndTime = formatDate(formEndTimeS);
         if(formStartTime == null || formEndTime == null) return new ResultWrapper<Object>(400, null);
         final int nd = 1000 * 24 * 60 * 60;
-        int length = (int)(formEndTime.getTime() - formStartTime.getTime()) / nd;
+        int length = (int)(formEndTime.getTime() - formStartTime.getTime()) / nd + 1;
         ResultWrapper<User> ruser = isLoginAPI(userVerify);
         if(!ruser.isSuccess() || ruser.getData() == null) return new ResultWrapper<Object>(ruser.getState(), null);
         User user = ruser.getData();
@@ -110,9 +112,32 @@ public class ModelController {
         ResultWrapper<List<Form>> res = approveList(userVerify);
         model.addAttribute("state", res.getState());
         if(res.isSuccess()){
-            model.addAttribute("list", res.getData());
+            List<Form> formList = res.getData();
+            List<Form> list = new ArrayList<Form>();
+            for(Form form :formList){
+                ResultWrapper<String> r = getNameByIdAPI(userVerify, form.getUserId());
+                User user = new User();
+                user.setUserName(r.getData());
+                form.setUser(user);
+                list.add(form);
+            }
+
+            model.addAttribute("list", list);
         }
         return "/model/approvalHoliday";
+    }
+
+    @RequestMapping(value="/api/approvalHoliday",
+            method = RequestMethod.GET,
+            produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public ResultWrapper<String> getNameByIdAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
+                                  int id){
+        User user = userService.isLogin(userVerify);
+        if(user == null) return new ResultWrapper<String>(ResultStateEnum.NOT_LOGIN.getState(), null);
+        user = userService.getUser(id);
+        if(user == null) return new ResultWrapper<String>(ResultStateEnum.NOT_FOUND.getState(), null);
+        return new ResultWrapper<String>(ResultStateEnum.OK.getState(), user.getUserName());
     }
 
     @RequestMapping(value="/addApprovalHoliday", method = RequestMethod.POST)
