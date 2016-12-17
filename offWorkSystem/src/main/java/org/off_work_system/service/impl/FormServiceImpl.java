@@ -61,6 +61,7 @@ public class FormServiceImpl implements FormService {
         }
 
         Form form = formDao.queryById(formId);
+
         int result = advance(form);
         return result;
     }
@@ -72,44 +73,53 @@ public class FormServiceImpl implements FormService {
         FormTypeEnum formTypeEnum = FormTypeEnum.stateof((formType));
 
         int nextState;
-        switch (formTypeEnum) {
-            case PUBLIC:
-                nextState = longProcessAdvance(curState);
-                break;
-            case ANNUAL:
-                nextState = shortProcessAdvance(curState);
-                break;
-            case SICK:
-                if (form.getFormLength() < 15) {
-                    nextState = shortProcessAdvance(curState);
-                }
-                else {
-                    nextState = longProcessAdvance(curState);
-                }
-                break;
-            case AFFAIR:
-                if (form.getFormLength() < 15) {
-                    nextState = shortProcessAdvance(curState);
-                }
-                else {
-                    nextState = longProcessAdvance(curState);
-                }
-                break;
-            case MARRIAGE:
-                nextState = longProcessAdvance(curState);
-                break;
-            case MATERNITY:
-                nextState = longProcessAdvance(curState);
-                break;
-            case PATERNITY:
-                nextState = longProcessAdvance(curState);
-                break;
-            case INJURY:
-                nextState = longProcessAdvance(curState);
-                break;
-            default:
-                nextState = 999;
+
+        int userDepartmentParentId = form.getUser().getDepartment().getDepartmentParent();
+        if (userDepartmentParentId == -1) {
+            //申请假期的人员属于三个顶层部门之一
+            nextState = shortProcessAdvance(curState);
         }
+        else {
+            switch (formTypeEnum) {
+                case PUBLIC:
+                    nextState = longProcessAdvance(curState);
+                    break;
+                case ANNUAL:
+                    nextState = shortProcessAdvance(curState);
+                    break;
+                case SICK:
+                    if (form.getFormLength() < 15) {
+                        nextState = shortProcessAdvance(curState);
+                    }
+                    else {
+                        nextState = longProcessAdvance(curState);
+                    }
+                    break;
+                case AFFAIR:
+                    if (form.getFormLength() < 15) {
+                        nextState = shortProcessAdvance(curState);
+                    }
+                    else {
+                        nextState = longProcessAdvance(curState);
+                    }
+                    break;
+                case MARRIAGE:
+                    nextState = longProcessAdvance(curState);
+                    break;
+                case MATERNITY:
+                    nextState = longProcessAdvance(curState);
+                    break;
+                case PATERNITY:
+                    nextState = longProcessAdvance(curState);
+                    break;
+                case INJURY:
+                    nextState = longProcessAdvance(curState);
+                    break;
+                default:
+                    nextState = 999;
+            }
+        }
+
         if (nextState == 999) {
             return 999;
         }
@@ -124,6 +134,7 @@ public class FormServiceImpl implements FormService {
         }
     }
 
+    //短流程（只有一步审批）推进
     private int shortProcessAdvance(int curState) {
         if (curState == 1) {
             return 0;
@@ -133,6 +144,7 @@ public class FormServiceImpl implements FormService {
         }
     }
 
+    //长流程（有两部审批）推进
     private int longProcessAdvance(int curState) {
         if (curState == 1) {
             return 2;
