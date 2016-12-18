@@ -33,13 +33,13 @@ public class FormServiceTest {
 
     @Test
     public void addForm() throws Exception {
-        int result = formService.addForm(1000, 7, 16, new Date(), new Date());
+        int result = formService.addForm(1000, 1, 3, new Date(), new Date());
         System.out.println(result);
     }
 
     @Test
     public void advanceForm() throws Exception {
-        int result = formService.advanceForm(1000, 1013);
+        int result = formService.advanceForm(1000, 1021);
         System.out.println(result);
     }
 

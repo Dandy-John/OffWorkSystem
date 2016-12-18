@@ -8,6 +8,7 @@ import org.off_work_system.entity.Form;
 import org.off_work_system.entity.User;
 import org.off_work_system.enums.FormStateEnum;
 import org.off_work_system.enums.FormTypeEnum;
+import org.off_work_system.enums.ResultStateEnum;
 import org.off_work_system.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -123,6 +124,24 @@ public class FormServiceImpl implements FormService {
 
         if (nextState == 999) {
             return 999;
+        }
+
+       // System.out.println(form);
+        if (form.getFormType() == FormTypeEnum.ANNUAL.getState() && nextState == 0) {
+            //System.out.println("ttttttttttttttttttttttttttt");
+            int timeLeft = form.getUser().getUserTimeLeft();
+            if (form.getFormLength() > timeLeft) {
+                return ResultStateEnum.NO_ENOUGH_ANNUAL.getState();
+            }
+            else {
+                User user = userDao.queryById(form.getUserId());
+                user.setUserTimeLeft(timeLeft - form.getFormLength());
+                form.setFormState(nextState);
+                formDao.updateForm(form);
+                //System.out.println(user);
+                userDao.updateUser(user);
+                return ResultStateEnum.OK.getState();
+            }
         }
 
         form.setFormState(nextState);
@@ -310,7 +329,7 @@ public class FormServiceImpl implements FormService {
         if (user == null) {
             return null;
         }
-        List<Form> formList = formDao.queryAll(0, userDao.size());
+        List<Form> formList = formDao.queryAll(0, formDao.size());
         List<Form> result = new ArrayList<Form>();
         for (Form form : formList) {
             if (isVisible(form.getFormId(), userId) == 200) {
@@ -326,7 +345,7 @@ public class FormServiceImpl implements FormService {
         if (user == null) {
             return null;
         }
-        List<Form> formList = formDao.queryAll(0, userDao.size());
+        List<Form> formList = formDao.queryAll(0, formDao.size());
         List<Form> result = new ArrayList<Form>();
         for (Form form : formList) {
             if (form.getUserId() == userId) {

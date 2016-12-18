@@ -14,6 +14,7 @@ public enum ResultStateEnum {
     WRONG_PASSWORD(603, "用户名不存在或密码错误"),
     CANT_DELETE(604, "不能删除顶层部门"),
     NOT_EMPTY(605, "部门内有员工，不能删除"),
+    NO_ENOUGH_ANNUAL(606, "剩余年假不足"),
     UNKNOWN_INNER_FAULT(999, "系统内部未知错误");
 
     private int state;
