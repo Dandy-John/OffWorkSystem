@@ -505,7 +505,7 @@ public class UserController {
 
     @RequestMapping(
             value = "/api/resetTimeLeft",
-            method = RequestMethod.GET,
+            method = RequestMethod.POST,
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
