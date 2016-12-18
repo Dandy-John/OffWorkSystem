@@ -15,7 +15,7 @@
         function state(result){
             if (result.state == 200) {
                 if(result.data.isAdmin == 1) return "admin";
-                else if (result.data.department.departmentParent != -1) return "normal";
+                else if (result.data.department.departmentParent != -1 && result.data.userLeader == 0) return "normal";
                 else return "approver";
             }
             else {
