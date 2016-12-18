@@ -117,6 +117,13 @@ public class UserDaoTest {
     }
 
     @Test
+    public void resetTimeLeft() throws Exception {
+        int timeLeft = 11;
+        int result = userDao.resetTimeLeft(timeLeft);
+        System.out.println(result);
+    }
+
+    @Test
     public void size() throws Exception {
         int size = userDao.size();
         System.out.println(size);

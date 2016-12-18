@@ -4,6 +4,7 @@ import org.off_work_system.dao.DepartmentDao;
 import org.off_work_system.dao.UserDao;
 import org.off_work_system.entity.Department;
 import org.off_work_system.entity.User;
+import org.off_work_system.enums.ResultStateEnum;
 import org.off_work_system.exception.PermissionDeniedException;
 import org.off_work_system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -308,6 +309,19 @@ public class UserServiceImpl implements UserService {
         }
         else {
             return 603;
+        }
+    }
+
+    public int resetTimeLeft(int timeLeft) {
+        if (timeLeft < 0 || timeLeft > 365) {
+            return ResultStateEnum.INVALID_INPUT.getState();
+        }
+        int result = userDao.resetTimeLeft(timeLeft);
+        if (result != 0) {
+            return ResultStateEnum.OK.getState();
+        }
+        else {
+            return ResultStateEnum.UPDATE_FAILED.getState();
         }
     }
 }

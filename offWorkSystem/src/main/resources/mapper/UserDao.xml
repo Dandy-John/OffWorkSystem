@@ -147,4 +147,8 @@
     <select id="size" resultType="int">
         select count(*) from user;
     </select>
+    <update id="resetTimeLeft">
+        update user set
+          user_time_left = #{userTimeLeft}
+    </update>
 </mapper>

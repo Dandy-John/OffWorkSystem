@@ -26,5 +26,7 @@ public interface UserDao {
 
     User tryLogin(@Param("userUsername") String userUsername, @Param("userPassword") String userPassword);
 
+    int resetTimeLeft(@Param("userTimeLeft") int userTimeLeft);
+
     int size();
 }

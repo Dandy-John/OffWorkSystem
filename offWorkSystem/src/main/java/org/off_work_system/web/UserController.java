@@ -503,6 +503,25 @@ public class UserController {
         }
     }
 
+    @RequestMapping(
+            value = "/api/resetTimeLeft",
+            method = RequestMethod.GET,
+            produces = {"application/json;charset=UTF-8"}
+    )
+    @ResponseBody
+    //每年重置所有用户的剩余年假的api，需要管理员权限
+    public ResultWrapper resetTimeLeftAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
+                                       @ModelAttribute("userTimeLeft") int timeLeft) {
+        int permission = isAdminAPI(userVerify).getState();
+        if (permission != 200) {
+            return new ResultWrapper(permission, null);
+        }
+        else {
+            int result = userService.resetTimeLeft(timeLeft);
+            return new ResultWrapper(result, null);
+        }
+    }
+
 
     //--------------------------------------------------------------------
     //cookie example

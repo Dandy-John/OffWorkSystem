@@ -39,4 +39,6 @@ public interface UserService {
     int editMyself(int userId, String userName, String userSex, int userAge);
 
     int changeMyPassword(int userId, String oldPassword, String newPassword);
+
+    int resetTimeLeft(int timeLeft);
 }
