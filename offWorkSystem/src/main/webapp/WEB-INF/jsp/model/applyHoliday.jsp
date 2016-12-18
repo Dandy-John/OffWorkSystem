@@ -107,7 +107,7 @@
         var formStartTime = $('#formStartTime').val();
         var formEndTime = $('#formEndTime').val();
 
-        $.post('/off_work_system/model/' + 'addApplyHoliday', {
+        $.post('/off_work_system/model/' + 'api/addApplyHoliday', {
             'formType': formType,
             'formStartTime': formStartTime,
             'formEndTime': formEndTime

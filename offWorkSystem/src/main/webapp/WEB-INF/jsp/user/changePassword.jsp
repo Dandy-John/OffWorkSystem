@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>修改密码</title>
 </head>
 <body>
 
@@ -25,28 +25,32 @@
         <div class="panel-heading text-center">
             <h2>修改密码</h2>
         </div>
-        <div class="panel-body" style="text-align:center">
-            <form id="editForm">
-                <div>
-                    <label class="control-label">用户名</label>
-                    <input type="text" id="userUsername" value="${user.userUsername}" disabled />
-                </div>
-                <div>
-                    <label class="control-label">旧密码</label>
-                    <input type="password" id="oldPasword" />
-                </div>
-                <div>
-                    <label class="control-label">新密码</label>
-                    <input type="password" id="newPassword" />
-                </div>
-                <div>
-                    <label class="control-label">新密码确认</label>
-                    <input type="password" id="newPasswordRepeat" />
-                </div>
-                <div>
-                    <input type="button" class="btn btn-primary" id="submit" value="更改" onclick="submitForm()"/>
-                    <input type="button" class="btn" id="cancel" value="取消" onclick="cancelEdit()" />
-                </div>
+        <div class="panel-body text-center" style="text-align:center">
+            <form id="editForm" style="text-align:center">
+                <table class="table text-center" style="width: 60%;margin-left: 20%">
+                    <tbody>
+                        <tr>
+                            <td><label class="control-label">用户名</label></td>
+                            <td><label id="userUsername" value="${user.userUsername}" >${user.userUsername}</label></td>
+                        </tr>
+                        <tr>
+                            <td><label class="control-label">旧密码</label></td>
+                            <td><input type="password" id="oldPasword" /></td>
+                        </tr>
+                        <tr>
+                            <td><label class="control-label">新密码</label></td>
+                            <td><input type="password" id="newPassword" /></td>
+                        </tr>
+                        <tr>
+                            <td><label class="control-label">新密码确认</label></td>
+                            <td><input type="password" id="newPasswordRepeat" /></td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" class="btn btn-primary" id="submit" value="更改" onclick="submitForm()"/></td>
+                            <td><input type="button" class="btn" id="cancel" value="取消" onclick="cancelEdit()" /></td>
+                        </tr>
+                    </tbody>
+                </table>
             </form>
         </div>
     </div>
@@ -66,7 +70,7 @@
         $.post("/off_work_system/user/api/changePassword", {
             'userId' : userId,
             'oldPassword' : oldPassword,
-            'newPassword' : +newPassword
+            'newPassword' : newPassword
         }, function(result) {
             if (result.state == 200) {
                 alert("修改成功，请重新登录");

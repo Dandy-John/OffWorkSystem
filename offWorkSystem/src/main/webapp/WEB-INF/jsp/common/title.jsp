@@ -24,7 +24,9 @@
         }
 
         switch (state(result)){
-            case "nologin": window.location.href='<%=PROJECT_PATH%>' + "user/login";
+            case "nologin": window.location.href='<%=PROJECT_PATH%>' + "user/login"; break;
+            case "admin": $("#userManage").html('<a href="${pageContext.request.contextPath}/user/list">用户管理</a>'); break;
+            case "approver": $("#approve").html('<a onclick="changePage(\'approvalHoliday\')">审批假期</a>');
         }
     });
 
@@ -69,8 +71,9 @@
             <ul class="nav navbar-nav">
                 <li class="hidden-sm hidden-md"><a onclick="changePage('queryHoliday')">申请查看</a></li>
                 <li><a onclick="changePage('applyHoliday')">申请假期</a></li>
-                <li><a onclick="changePage('approvalHoliday')">审批假期</a></li>
+                <li id="approve"></li>
                 <li><a onclick="changePage('personalInfo')">个人信息</a></li>
+                <li id="userManage"></li>
                 <li><a onclick="changePage('logout')">退出登录</a></li>
             </ul>
         </div>

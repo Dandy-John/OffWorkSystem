@@ -59,9 +59,9 @@ public class ModelController {
         return "/model/applyHoliday";
     }
 
-    @RequestMapping(value = "/addApplyHoliday", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/addApplyHoliday", method = RequestMethod.POST)
     @ResponseBody
-    public ResultWrapper<Object> addApplyHoliday(@CookieValue(value = "userVerify", required = false) String userVerify,
+    public ResultWrapper<Object> addApplyHolidayAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
                                                     @ModelAttribute("formType") int formType,
                                                     @ModelAttribute("formStartTime")String formStartTimeS,
                                                     @ModelAttribute("formEndTime")String formEndTimeS){
@@ -140,14 +140,24 @@ public class ModelController {
         return new ResultWrapper<String>(ResultStateEnum.OK.getState(), user.getUserName());
     }
 
-    @RequestMapping(value="/addApprovalHoliday", method = RequestMethod.POST)
+    @RequestMapping(value="/api/addApprovalHoliday", method = RequestMethod.POST)
     @ResponseBody
-    public ResultWrapper addApproveHoliday(@CookieValue(value = "userVerify", required = false) String userVerify,
+    public ResultWrapper addApproveHolidayAPI(@CookieValue(value = "userVerify", required = false) String userVerify,
                                            @ModelAttribute("formId") int formId){
         ResultWrapper<User> res = isLoginAPI(userVerify);
         User user = res.getData();
         if(!res.isSuccess() || user == null) return new ResultWrapper<Object>(res.getState(), null);
         return new ResultWrapper<Object>(formService.advanceForm(user.getUserId(), formId), null);
+    }
+
+    @RequestMapping(value="/api/rejectApprovalHoliday", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultWrapper rejectApproveHoliday(@CookieValue(value = "userVerify", required = false) String userVerify,
+                                           @ModelAttribute("formId") int formId){
+        ResultWrapper<User> res = isLoginAPI(userVerify);
+        User user = res.getData();
+        if(!res.isSuccess() || user == null) return new ResultWrapper<Object>(res.getState(), null);
+        return new ResultWrapper<Object>(formService.rejectForm(user.getUserId(), formId), null);
     }
 
     private Date formatDate(String dateS){

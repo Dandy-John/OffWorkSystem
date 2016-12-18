@@ -34,7 +34,6 @@
                         <th>假期长度</th>
                         <th>假期开始时间</th>
                         <th>假期结束时间</th>
-                        <th>附件</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -49,23 +48,36 @@
                             <td>${form.formLength}天</td>
                             <td><fmt:formatDate value="${form.formStartTime}" pattern="yyyy年MM月dd日 E"/></td>
                             <td><fmt:formatDate value="${form.formEndTime}" pattern="yyyy年MM月dd日 E"/></td>
-                            <td></td>
-                            <td><button onclick="submit(${form.formId})">批准</button></td>
+                            <td><button onclick="approve(${form.formId})">批准</button>
+                                <button onclick="refuse(${form.formId})">拒绝</button></td>
                         </tr>
                     </c:forEach>
                     <script type="application/javascript">
-                        function submit(formId){
-                            $.post('<%=MODEL_PATH%>' + "addApprovalHoliday",{
+                        function approve(formId){
+                            $.post('<%=MODEL_PATH%>' + "api/addApprovalHoliday",{
                                 formId: formId
                             }, function(result){
                                 console.log(result);
                                 if(result.state == 200){
                                     alert('审批成功');
-                                    window.location.href='<%=MODEL_PATH%>' + 'approvalHoliday';
+                                    window.location.href='<%=MODEL_PATH%>' + 'approvalHoliday'; // refresh
                                 }else{
                                     alert('审批失败');
                                 }
                             });
+                        }
+
+                        function refuse(formId){
+                            $.post('/api/rejectApprovalHoliday', {
+                                formId: formId
+                            }, function(result){
+                                if(result.state == 200){
+                                    alert('审批成功');
+                                    window.location.href='<%=MODEL_PATH%>' + 'approvalHoliday';  // refresh
+                                }else{
+                                    alert('审批失败');
+                                }
+                            })
                         }
                     </script>
                     </tbody>

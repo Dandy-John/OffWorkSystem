@@ -13,60 +13,44 @@
         </div>
         <div class="panel-body" style="text-align:center">
             <form id="editForm">
-                <div>
-                    <label class="control-label">用户名</label>
-                    <input type="text" id="userUsername" />
-                </div>
-                <div>
-                    <label class="control-label">密码</label>
-                    <input type="text" id="userPassword" value="000000" disabled />
-                </div>
-                <div>
-                    <label class="control-label">姓名</label>
-                    <input type="text" id="userName" />
-                </div>
-                <div>
-                    <label class="control-label">性别</label>
-                    <select id="userSex">
-                        <option value="男">男</option>
-                        <option value="女">女</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="control-label">年龄</label>
-                    <input type="text" id="userAge" />
-                </div>
-                <div>
-                    <label class="control-label">所属部门</label>
-                    <!--<input type="text" id="userDepartment" /> -->
-                    <select id="userDepartment">
-                        <c:forEach var="de" items="${departments}">
-                            <option value="${de.departmentId}">${de.departmentName}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-                <div>
-                    <label class="control-label">是否是领导</label>
-                    <select id="userLeader">
-                        <option value="1">是</option>
-                        <option value="0">否</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="control-label">剩余年假</label>
-                    <input type="text" id="userTimeLeft" />
-                </div>
-                <div>
-                    <label class="control-label">是否是管理员</label>
-                    <select id="isAdmin">
-                        <option value="1">是</option>
-                        <option value="0">否</option>
-                    </select>
-                </div>
-                <div>
-                    <input type="button" class="btn btn-primary" id="submit" value="新增" onclick="submitForm()"/>
-                    <input type="button" class="btn" id="cancel" value="取消" onclick="cancelAdd()" />
-                </div>
+                <table class="table text-center" style="width: 60%;margin-left: 20%">
+                    <tbody>
+                    <tr><td><label class="control-label">用户名</label></td> <td><input type="text" id="userUsername" /></td></tr>
+                    <tr><td><label class="control-label">密码</label></td>   <td><input type="text" id="userPassword" value="000000" disabled /></td></tr>
+                    <tr><td><label class="control-label">姓名</label></td>   <td><input type="text" id="userName" /></td></tr>
+                    <tr><td><label class="control-label">性别</label></td><td>
+                        <select id="userSex">
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select></td>
+                    </tr>
+                    <tr><td><label class="control-label">年龄</label></td>     <td><input type="text" id="userAge" /></td></tr>
+                    <tr><td><label class="control-label">所属部门</label></td> <td>
+                        <select id="userDepartment">
+                            <c:forEach var="de" items="${departments}">
+                                <option value="${de.departmentId}">${de.departmentName}</option>
+                            </c:forEach>
+                        </select></td>
+                    </tr>
+                    <tr><td><label class="control-label">是否是领导</label></td><td>
+                        <select id="userLeader">
+                            <option value="1">是</option>
+                            <option value="0">否</option>
+                        </select></td>
+                    </tr>
+                    <tr><td><label class="control-label">剩余年假</label></td><td><input type="text" id="userTimeLeft" /></td></tr>
+                    <tr><td><label class="control-label">是否是管理员</label></td><td>
+                        <select id="isAdmin">
+                            <option value="1">是</option>
+                            <option value="0">否</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td><input type="button" class="btn btn-primary" id="submit" value="新增" onclick="submitForm()"/></td>
+                        <td><input type="button" class="btn" id="cancel" value="取消" onclick="cancelAdd()" /></td>
+                    </tr>
+                    </tbody>
+                </table>
             </form>
         </div>
     </div>

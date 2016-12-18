@@ -19,11 +19,10 @@
             }
             $('#userInfo').html(info);
 
-            /// TODO 应当更改为controller里的url
-            window.location.href = "/off_work_system/model/queryHoliday";
+            window.location.href = "${pageContext.request.contextPath}/model/queryHoliday";
         }
         else {
-            window.location.href = "/off_work_system/user/login";
+            window.location.href = "${pageContext.request.contextPath}/user/login";
         }
         console.log(result);
     });
