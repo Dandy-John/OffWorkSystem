@@ -30,7 +30,7 @@
                     <tr><td>姓名</td><td>${user.userName}</td></tr>
                     <tr><td>性别</td><td>${user.userSex}</td></tr>
                     <tr><td>年龄</td><td>${user.userAge}</td></tr>
-                    <tr><td>所属部门</td><td>${user.userDepartment}</td></tr>
+                    <tr><td>所属部门</td><td>${user.department.departmentName}</td></tr>
                     <tr><td>剩余年假</td><td>${user.userTimeLeft}</td></tr>
                     </tbody>
                 </table>
