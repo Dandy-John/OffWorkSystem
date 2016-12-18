@@ -317,7 +317,7 @@ public class UserController {
             produces = {"application/json;charset=UTF-8"}
     )
     @ResponseBody
-    //判断当前cookie中存储的用户是否具有管理员权限。（三个顶层部门的领导具有管理员权限）
+    //判断当前cookie中存储的用户是否具有管理员权限。管理员权限存储在user表的一个字段中
     public ResultWrapper<User> isAdminAPI(@CookieValue(value = "userVerify", required = false) String userVerify) {
         return new ResultWrapper<User>(userService.verifyCookieOfAdmin(userVerify), null);
     }
