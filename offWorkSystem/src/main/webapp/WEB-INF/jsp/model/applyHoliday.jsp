@@ -67,6 +67,12 @@
                                 <script type="text/javascript">
                                     $(document).ready(function() {
                                         $('#reservation').daterangepicker(null, function(start, end, label) {
+                                            start = new Date(start.toISOString());
+                                            end = new Date(end.toISOString());
+
+                                            start = new Date(start.getTime() + 8 * 60 * 60 * 1000); // 18:00 --> 24:00
+                                            end = new Date(end.getTime() + 8 * 60 * 60 * 1000);
+
                                             $('#formStartTime').val(start.toISOString());
                                             $('#formEndTime').val(end.toISOString());
                                             console.log(start.toISOString(), end.toISOString(), label);
@@ -103,7 +109,6 @@
         var formStartTime = $('#formStartTime').val();
         var formEndTime = $('#formEndTime').val();
 
-
         if (formType == 3) {
             var page = $('#peiou').val();
             if (isNaN(page)) {
@@ -123,7 +128,7 @@
             var start = new Date(formStartTime);
             var end = new Date(formEndTime);
             var cmp = end.getTime() - start.getTime() + 1;
-            var days = Math.floor(cmp/(24*3600*1000))
+            var days = Math.floor(cmp/(24*3600*1000));
             /*
             console.log(start);
             console.log(end);

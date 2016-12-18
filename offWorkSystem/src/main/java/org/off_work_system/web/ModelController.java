@@ -54,9 +54,18 @@ public class ModelController {
     @RequestMapping(value="/applyHoliday", method = RequestMethod.GET)
     public String applyHoliday(@CookieValue(value = "userVerify", required = false)String userVerify,
                                Model model){
+        User user = isLoginAPI(userVerify).getData();
         List<FormTypeEnum> list = new ArrayList<FormTypeEnum>();
-        Collections.addAll(list, FormTypeEnum.values());
-        model.addAttribute("user", isLoginAPI(userVerify).getData());
+        if(user.getUserSex().equals("男")){
+            for(FormTypeEnum type: FormTypeEnum.values()){
+                if(type.getState() !=  FormTypeEnum.MATERNITY.getState()) list.add(type);
+            }
+        }else{
+            for(FormTypeEnum type: FormTypeEnum.values()){
+                if(type.getState() != FormTypeEnum.PATERNITY.getState()) list.add(type);
+            }
+        }
+        model.addAttribute("user", user);
         model.addAttribute("typeList", list);
         return "/model/applyHoliday";
     }
@@ -71,7 +80,8 @@ public class ModelController {
         Date formEndTime = formatDate(formEndTimeS);
         if(formStartTime == null || formEndTime == null) return new ResultWrapper<Object>(400, null);
         final int nd = 1000 * 24 * 60 * 60;
-        int length = (int)(formEndTime.getTime() - formStartTime.getTime()) / nd + 1;
+        int length = (int)((formEndTime.getTime() - formStartTime.getTime()))/ nd + 1;
+        //System.out.println("*********************" + ((formEndTime.getTime() - formStartTime.getTime()) + 1));
         ResultWrapper<User> ruser = isLoginAPI(userVerify);
         if(!ruser.isSuccess() || ruser.getData() == null) return new ResultWrapper<Object>(ruser.getState(), null);
         User user = ruser.getData();
