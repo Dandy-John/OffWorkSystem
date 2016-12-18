@@ -293,7 +293,7 @@ public class UserServiceImpl implements UserService {
 
     public int changeMyPassword(int userId, String oldPassword, String newPassword) {
         oldPassword = md5(oldPassword);
-        System.out.println(newPassword);
+        //System.out.println(newPassword);
         newPassword = md5(newPassword);
         User user = userDao.queryById(userId);
         if (user.getUserPassword().equals(oldPassword)) {
