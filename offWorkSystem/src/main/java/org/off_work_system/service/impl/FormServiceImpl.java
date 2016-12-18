@@ -6,6 +6,7 @@ import org.off_work_system.dao.UserDao;
 import org.off_work_system.entity.Department;
 import org.off_work_system.entity.Form;
 import org.off_work_system.entity.User;
+import org.off_work_system.enums.FormStateEnum;
 import org.off_work_system.enums.FormTypeEnum;
 import org.off_work_system.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -333,6 +334,18 @@ public class FormServiceImpl implements FormService {
                 result.add(form);
             }
         }
+        return result;
+    }
+
+    public List<Form> showAllPassedForm() {
+        List<Form> formList = formDao.queryAll(0, formDao.size());
+        List<Form> result = new ArrayList<Form>();
+        for (Form form : formList) {
+            if (form.getFormState() == FormStateEnum.PASSED.getState()) {
+                result.add(form);
+            }
+        }
+
         return result;
     }
 }

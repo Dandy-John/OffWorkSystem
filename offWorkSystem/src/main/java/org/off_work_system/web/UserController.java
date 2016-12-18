@@ -484,6 +484,25 @@ public class UserController {
         }
     }
 
+    @RequestMapping(
+            value = "/api/showAllPassedApplications",
+            method = RequestMethod.GET,
+            produces = {"application/json;charset=UTF-8"}
+    )
+    @ResponseBody
+    //查看所有已经通过的请假申请，需要cookie中是有管理员权限的用户
+    public ResultWrapper<List<Form>> showAllPassedApplications(
+            @CookieValue(value = "userVerify", required = false) String userVerify) {
+        ResultWrapper<User> wrapper = isAdminAPI(userVerify);
+        if (!wrapper.isSuccess()) {
+            return new ResultWrapper<List<Form>>(wrapper.getState(), null);
+        }
+        else {
+            List<Form> formList = formService.showAllPassedForm();
+            return new ResultWrapper<List<Form>>(200, formList);
+        }
+    }
+
 
     //--------------------------------------------------------------------
     //cookie example

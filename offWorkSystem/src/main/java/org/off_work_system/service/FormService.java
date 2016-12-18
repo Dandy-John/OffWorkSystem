@@ -21,4 +21,6 @@ public interface FormService {
     List<Form> showVisibleFormList(int userId);
 
     List<Form> showMyFormList(int userId);
+
+    List<Form> showAllPassedForm();
 }

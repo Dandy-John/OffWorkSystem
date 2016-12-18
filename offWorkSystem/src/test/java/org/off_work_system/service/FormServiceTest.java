@@ -49,4 +49,11 @@ public class FormServiceTest {
         System.out.println("reject result: " + result);
     }
 
+    @Test
+    public void showAllPassedForm() throws Exception {
+        List<Form> formList = formService.showAllPassedForm();
+        for (Form form : formList) {
+            System.out.println(form);
+        }
+    }
 }
