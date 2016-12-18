@@ -108,7 +108,9 @@
                 window.location.href="/off_work_system/model/queryHoliday";
             }else
             {
-                alert("申请提交失败");
+                $.post("/off_work_system/error/api/getErrorInfo", {'state' : result.state}, function(r) {
+                    alert("申请提交失败\n" + r.data);
+                });
             }
         })
     }

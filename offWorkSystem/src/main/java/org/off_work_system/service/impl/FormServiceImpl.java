@@ -42,6 +42,25 @@ public class FormServiceImpl implements FormService {
 
     public int addForm(int userId, int formType, int formLength, Date formStartTime, Date formEndTime) {
         FormTypeEnum formTypeEnum = FormTypeEnum.stateof(formType);
+        User user = userDao.queryById(userId);
+        if (user == null) {
+            return 404;
+        }
+
+        if (user.getUserSex().equals("男") && formType == FormTypeEnum.MATERNITY.getState()) {
+            return ResultStateEnum.INVALID_INPUT.getState();
+        }
+        if (user.getUserSex().equals("女") && formType == FormTypeEnum.PATERNITY.getState()) {
+            return ResultStateEnum.INVALID_INPUT.getState();
+        }
+        if (formType == FormTypeEnum.MATERNITY.getState() && formLength > 98) {
+            return ResultStateEnum.TOO_LONG98.getState();
+        }
+
+        if (formType == FormTypeEnum.PATERNITY.getState() && formLength > 15) {
+            return ResultStateEnum.TOO_LONG15.getState();
+        }
+
         if (formEndTime == null) {
             return 602;
         }

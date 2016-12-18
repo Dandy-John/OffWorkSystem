@@ -15,6 +15,10 @@ public enum ResultStateEnum {
     CANT_DELETE(604, "不能删除顶层部门"),
     NOT_EMPTY(605, "部门内有员工，不能删除"),
     NO_ENOUGH_ANNUAL(606, "剩余年假不足"),
+    TOO_LONG15(607, "陪产假不能超过15天"),
+    TOO_LONG98(608, "产假不能超过98天"),
+    TOO_LONG3(609, "婚假不能超过3天"),
+    TOO_LONG13(610, "晚婚假不能超过13天"),
     UNKNOWN_INNER_FAULT(999, "系统内部未知错误");
 
     private int state;
