@@ -36,11 +36,17 @@
                         <tr>
                             <td><h4 class="control-label">假期类型</h4></td>
                             <td>
-                                <select id="formType" style="width: 238px; height: 34px">
+                                <select id="formType" style="width: 238px; height: 34px" onchange="changeType()">
                                     <c:forEach var="type" items="${typeList}">
                                         <option value="${type.state}">${type.stateInfo}</option>
                                     </c:forEach>
                                 </select>
+                            </td>
+                        </tr>
+                        <tr id="hd" hidden="hidden">
+                            <td>配偶年龄</td>
+                            <td>
+                                <input type="text" class="form-control" id="peiou" />
                             </td>
                         </tr>
 
@@ -97,6 +103,48 @@
         var formStartTime = $('#formStartTime').val();
         var formEndTime = $('#formEndTime').val();
 
+
+        if (formType == 3) {
+            var page = $('#peiou').val();
+            if (isNaN(page)) {
+                alert("配偶年龄必须是数字");
+                return;
+            }
+            var sex = '${user.userSex}';
+            var age = ${user.userAge};
+            var limit;
+            if ((sex == "男" && age >= 25 && page >= 23) || (sex == "女" && age >= 23 && page >= 25)) {
+                limit = 13;
+            }
+            else {
+                limit = 3;
+            }
+
+            var start = new Date(formStartTime);
+            var end = new Date(formEndTime);
+            var cmp = end.getTime() - start.getTime() + 1;
+            var days = Math.floor(cmp/(24*3600*1000))
+            /*
+            console.log(start);
+            console.log(end);
+            console.log(days);
+            */
+
+            var detail = "当前您和配偶";
+            if (limit == 3) {
+                detail += "不";
+            }
+            detail += "符合晚婚条件,可以请假的天数为 ";
+            detail += limit;
+            detail += " 天";
+
+            if (days > limit) {
+                alert('申请的假期时间超过天数限制\n' + detail);
+                return;
+            }
+        }
+
+
         $.post('/off_work_system/model/' + 'api/addApplyHoliday', {
             'formType': formType,
             'formStartTime': formStartTime,
@@ -113,6 +161,15 @@
                 });
             }
         })
+    }
+
+    function changeType() {
+        if ($('#formType').val() == 3) {
+            $('#hd').removeAttr('hidden');
+        }
+        else {
+            $('#hd').attr('hidden', 'hidden');
+        }
     }
 </script>
 </html>

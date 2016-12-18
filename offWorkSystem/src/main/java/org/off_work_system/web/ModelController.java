@@ -52,9 +52,11 @@ public class ModelController {
 //    }
 
     @RequestMapping(value="/applyHoliday", method = RequestMethod.GET)
-    public String applyHoliday(Model model){
+    public String applyHoliday(@CookieValue(value = "userVerify", required = false)String userVerify,
+                               Model model){
         List<FormTypeEnum> list = new ArrayList<FormTypeEnum>();
         Collections.addAll(list, FormTypeEnum.values());
+        model.addAttribute("user", isLoginAPI(userVerify).getData());
         model.addAttribute("typeList", list);
         return "/model/applyHoliday";
     }
