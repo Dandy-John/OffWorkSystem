@@ -47,7 +47,7 @@
                         </tr>
                         <tr>
                             <td><input type="button" class="btn btn-primary" id="submit" value="更改" onclick="submitForm()"/></td>
-                            <td><input type="button" class="btn" id="cancel" value="取消" onclick="cancelEdit()" /></td>
+                            <td><input type="button" class="btn" id="cancel" value="返回" onclick="cancelEdit()" /></td>
                         </tr>
                     </tbody>
                 </table>
@@ -92,7 +92,7 @@
     }
 
     function cancelEdit() {
-        window.location.href = "/off_work_system/user/edit";
+        window.location.href = "/off_work_system/model/personalInfo";
     }
 </script>
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->

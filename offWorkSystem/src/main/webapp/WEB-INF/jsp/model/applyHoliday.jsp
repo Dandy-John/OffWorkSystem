@@ -26,63 +26,53 @@
 <div class="jumbotron masthead">
     <div class="container">
         <div class="panel panel-default">
+            <div class="panel-heading text-center">
+                <h2>申请假期</h2>
+            </div>
             <div class="panel-body" style="text-align:center">
                 <form id="editForm">
-                    <div>
-                        <label class="control-label">假期类型</label>
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-                                Dropdown<span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                <c:forEach var="type" items="${typeList}">
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" onclick="changeFormType(${type.state})">${type.stateInfo}</a></li>
-                                </c:forEach>
-                            </ul>
-                        </div>
-                        <script type="application/javascript">
-                            function changeFormType(type){
-                                console.log("formtype :" + type);
-                                $('#formType').val(type);
-                            }
-                        </script>
-                    </div>
+                    <table class="table text-left" style="width: 60%;margin-left: 20%">
+                        <tbody>
+                        <tr>
+                            <td><h4 class="control-label">假期类型</h4></td>
+                            <td>
+                                <select id="formType" style="width: 238px; height: 34px">
+                                    <c:forEach var="type" items="${typeList}">
+                                        <option value="${type.state}">${type.stateInfo}</option>
+                                    </c:forEach>
+                                </select>
+                            </td>
+                        </tr>
 
-                    <div class="span12">
-                        <h4>请假时段</h4>
-                        <div class="well">
-                            <form class="form-horizontal">
+                        <tr>
+                            <td><h4>请假时段</h4></td>
+                            <td>
                                 <fieldset>
                                     <div class="control-group">
                                         <div class="controls">
                                             <div class="input-prepend input-group">
-                                        <span class="add-on input-group-addon">
-                                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                        </span>
+                                                <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
                                                 <input type="text" readonly style="width: 200px" name="reservation" id="reservation" class="form-control" value="2016-12-19 - 2016-12-21" />
                                             </div>
                                         </div>
                                     </div>
                                 </fieldset>
-                            </form>
 
-                            <script type="text/javascript">
-                                $(document).ready(function() {
-                                    $('#reservation').daterangepicker(null, function(start, end, label) {
-                                        $('#formStartTime').val(start.toISOString());
-                                        $('#formEndTime').val(end.toISOString());
-                                        console.log(start.toISOString(), end.toISOString(), label);
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                        $('#reservation').daterangepicker(null, function(start, end, label) {
+                                            $('#formStartTime').val(start.toISOString());
+                                            $('#formEndTime').val(end.toISOString());
+                                            console.log(start.toISOString(), end.toISOString(), label);
+                                        });
                                     });
-                                });
-                            </script>
+                                </script>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
 
-                        </div>
-                    </div>
 
-                    <div hidden>
-                        <label class="control-label">假期类型</label>
-                        <input type="text" id="formType" value="1"/>
-                    </div>
                     <div hidden>
                         <label class="control-label">假期起始时间</label>
                         <input type="text" id="formStartTime" value="2016-12-19"/>
@@ -115,6 +105,7 @@
             console.log(result);
             if(result.state == 200){
                 alert("申请提交成功");
+                window.location.href="/off_work_system/model/queryHoliday";
             }else
             {
                 alert("申请提交失败");

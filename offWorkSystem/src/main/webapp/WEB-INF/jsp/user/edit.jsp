@@ -6,6 +6,9 @@
     <%@include file="../common/head.jsp"%>
 </head>
 <body>
+<%@include file="../common/userTitle.jsp"%>
+
+<div class="jumbotron masthead">
 <div class="container">
     <div class="panel panel-default">
         <div class="panel-heading text-center">
@@ -13,64 +16,50 @@
         </div>
         <div class="panel-body" style="text-align:center">
             <form id="editForm">
-                <div>
-                    <label class="control-label">用户名</label>
-                    <input type="text" id="userUsername" value="${user.userUsername}" disabled />
-                </div>
-                <div>
-                    <label class="control-label">密码</label>
-                    <input type="text" id="userPassword" value="${user.userPassword}" disabled />
-                    <input type="button" class="btn" id="reset" value="重置" onclick="resetPassword()" />
-                </div>
-                <div>
-                    <label class="control-label">姓名</label>
-                    <input type="text" id="userName" value="${user.userName}" />
-                </div>
-                <div>
-                    <label class="control-label">性别</label>
-                    <select id="userSex">
-                        <option value="男" ${user.userSex.equals("男") ? "selected=\"selected\"" : ""}>男</option>
-                        <option value="女" ${user.userSex.equals("女") ? "selected=\"selected\"" : ""}>女</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="control-label">年龄</label>
-                    <input type="text" id="userAge" value="${user.userAge}" />
-                </div>
-                <div>
-                    <label class="control-label">所属部门</label>
-                    <!--<input type="text" id="userDepartment" value="${user.userDepartment}" /> -->
-                    <select id="userDepartment">
+                <table class="table text-center" style="width: 60%;margin-left: 20%">
+                    <tbody>
+                    <tr><td><label class="control-label">用户名</label></td> <td><input type="text" id="userUsername" value="${user.userUsername}" disabled /></td></tr>
+                    <tr><td><label class="control-label">密码</label></td> <td>
+                        <%--<input type="text" id="userPassword" value="${user.userPassword}" disabled />--%>
+                        <input type="button" class="btn" id="reset" value="重置" onclick="resetPassword()" /></td>
+                    </tr>
+                    <tr><td><label class="control-label">姓名</label></td><td><input type="text" id="userName" value="${user.userName}" /></td></tr>
+                    <tr><td><label class="control-label">性别</label></td><td>
+                        <select id="userSex">
+                            <option value="男" ${user.userSex.equals("男") ? "selected=\"selected\"" : ""}>男</option>
+                            <option value="女" ${user.userSex.equals("女") ? "selected=\"selected\"" : ""}>女</option>
+                        </select></td>
+                    </tr>
+                    <tr><td><label class="control-label">年龄</label></td> <td><input type="text" id="userAge" value="${user.userAge}" /></td></tr>
+                    <tr><td><label class="control-label">所属部门</label></td> <td>
+                        <select id="userDepartment">
                         <c:forEach var="de" items="${departments}">
                             <option value="${de.departmentId}" ${user.userDepartment == de.departmentId ? "selected=\"selected\"" : ""}>${de.departmentName}</option>
                         </c:forEach>
-                    </select>
-                </div>
-                <div>
-                    <label class="control-label">是否是领导</label>
-                    <select id="userLeader">
-                        <option value="1" ${user.userLeader == 1 ? "selected=\"selected\"" : ""}>是</option>
-                        <option value="0" ${user.userLeader == 0 ? "selected=\"selected\"" : ""}>否</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="control-label">剩余年假</label>
-                    <input type="text" id="userTimeLeft" value="${user.userTimeLeft}" />
-                </div>
-                <div>
-                    <label class="control-label">是否是管理员</label>
-                    <select id="isAdmin">
-                        <option value="1" ${user.isAdmin == 1 ? "selected=\"selected\"" : ""}>是</option>
-                        <option value="0" ${user.isAdmin == 0 ? "selected=\"selected\"" : ""}>否</option>
-                    </select>
-                </div>
-                <div>
-                    <input type="button" class="btn btn-primary" id="submit" value="更改" onclick="submitForm()"/>
-                    <input type="button" class="btn" id="cancel" value="取消" onclick="cancelEdit()" />
-                </div>
+                        </select></td>
+                    </tr>
+                    <tr><td><label class="control-label">是否是领导</label></td><td>
+                        <select id="userLeader">
+                            <option value="1" ${user.userLeader == 1 ? "selected=\"selected\"" : ""}>是</option>
+                            <option value="0" ${user.userLeader == 0 ? "selected=\"selected\"" : ""}>否</option>
+                        </select></td>
+                    </tr>
+                    <tr><td><label class="control-label">剩余年假</label></td> <td><input type="text" id="userTimeLeft" value="${user.userTimeLeft}" /></td></tr>
+                    <tr><td><label class="control-label">是否是管理员</label></td> <td>
+                        <select id="isAdmin">
+                            <option value="1" ${user.isAdmin == 1 ? "selected=\"selected\"" : ""}>是</option>
+                            <option value="0" ${user.isAdmin == 0 ? "selected=\"selected\"" : ""}>否</option>
+                        </select></td>
+                    </tr>
+                    <tr><td><input type="button" class="btn btn-primary" id="submit" value="更改" onclick="submitForm()"/></td>
+                        <td><input type="button" class="btn" id="cancel" value="取消" onclick="cancelEdit()" /></td>
+                    </tr>
+                    </tbody>
+                </table>
             </form>
         </div>
     </div>
+</div>
 </div>
 </body>
 <script>

@@ -68,7 +68,7 @@
                         }
 
                         function refuse(formId){
-                            $.post('/api/rejectApprovalHoliday', {
+                            $.post('<%=MODEL_PATH%>' + '/api/rejectApprovalHoliday', {
                                 formId: formId
                             }, function(result){
                                 if(result.state == 200){

@@ -10,3 +10,10 @@
 <![endif]-->
 
 <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<style>
+    select{
+        width: 195px;
+        height: 28px;
+    }
+</style>

@@ -6,6 +6,10 @@
     <%@include file="../common/head.jsp"%>
 </head>
 <body>
+
+<%@include file="../common/userTitle.jsp"%>
+
+<div class="jumbotron masthead">
 <div class="container">
     <div class="panel panel-default">
         <div class="panel-heading text-center">
@@ -51,6 +55,7 @@
             </table>
         </div>
     </div>
+</div>
 </div>
 </body>
 <script>

@@ -25,9 +25,10 @@
 
         switch (state(result)){
             case "nologin": window.location.href='<%=PROJECT_PATH%>' + "user/login"; break;
-            case "admin": $("#userManage").html('<a href="${pageContext.request.contextPath}/user/list">用户管理</a>'); break;
+            case "admin": $("#userManage").html('<a href="${pageContext.request.contextPath}/user/list">用户管理</a>');
             case "approver": $("#approve").html('<a onclick="changePage(\'approvalHoliday\')">审批假期</a>');
         }
+        $("#welcome").html('<a>您好,' + result.data.userUsername + '</a>');
     });
 
     function logout() {
@@ -75,6 +76,11 @@
                 <li><a onclick="changePage('personalInfo')">个人信息</a></li>
                 <li id="userManage"></li>
                 <li><a onclick="changePage('logout')">退出登录</a></li>
+            </ul>
+
+
+            <ul class="nav navbar-nav navbar-right hidden-sm">
+                <li id="welcome"></li>
             </ul>
         </div>
     </div>
