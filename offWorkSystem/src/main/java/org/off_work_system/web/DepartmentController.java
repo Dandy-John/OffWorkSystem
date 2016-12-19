@@ -8,6 +8,7 @@ import org.off_work_system.service.DepartmentService;
 import org.off_work_system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,18 @@ public class DepartmentController {
 
     @Autowired
     private UserService userService;
+
+    @RequestMapping(
+            value = "/department",
+            method = RequestMethod.GET)
+    public String  department(
+            @CookieValue(value = "userVerify", required = false) String userVerify,
+            Model model){
+        ResultWrapper<List<Department>> res = listDepartment(userVerify);
+        model.addAttribute("state", res.getState());
+        model.addAttribute("list", res.getData());
+        return "/department/department";
+    }
 
     @RequestMapping(
             value = "/api/addDepartment",
@@ -73,5 +86,26 @@ public class DepartmentController {
         }
         int result = departmentService.deleteDepartment(departmentId);
         return new ResultWrapper<Department>(result, null);
+    }
+
+    @RequestMapping(
+            value = "/api/listDepartment",
+            method = RequestMethod.GET,
+            produces = {"application/json;charset=UTF-8"}
+    )
+    @ResponseBody
+    public ResultWrapper<List<Department>> listDepartment(
+            @CookieValue(value = "userVerify", required = false) String userVerify){
+        int permission = userService.verifyCookieOfAdmin(userVerify);
+        if (permission != 200) {
+            return new ResultWrapper<List<Department>>(permission, null);
+        }
+
+        List<Department> list = departmentService.queryAll();
+        if(list == null){
+            return new ResultWrapper<List<Department>>(ResultStateEnum.UNKNOWN_INNER_FAULT.getState(), null);
+        }else{
+            return new ResultWrapper<List<Department>>(ResultStateEnum.OK.getState(), list);
+        }
     }
 }
