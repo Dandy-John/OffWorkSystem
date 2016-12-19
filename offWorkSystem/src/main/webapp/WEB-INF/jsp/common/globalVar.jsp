@@ -11,3 +11,5 @@
     String PROJECT_PATH = "/off_work_system/";
     String MODEL_PATH = PROJECT_PATH + "model/";
 %>
+
+<c:set var="pageSize" value="9"/>
